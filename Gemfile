@@ -22,7 +22,7 @@ end
 
 gem 'jquery-rails'
 gem 'mechanize'
-gem 'rack-throttle'
+gem 'improved-rack-throttle'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
