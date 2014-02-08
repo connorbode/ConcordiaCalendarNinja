@@ -21,8 +21,8 @@ group :assets do
 end
 
 gem 'jquery-rails'
-gem "google_calendar", "~> 0.3.1"
 gem 'mechanize'
+gem 'rack-throttle'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
