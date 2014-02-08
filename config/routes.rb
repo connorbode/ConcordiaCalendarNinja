@@ -1,6 +1,9 @@
 ConcordiaCalendarNinja::Application.routes.draw do
 
-  get '/', to: 'calendar#ninja'
+  get "(*redirect_path)", to: "batman#index", constraints: lambda { |request| request.format == "text/html" }
+
+
+  get '/', to: 'batman#index'
   post '/', to: 'calendar#ninja'
   # The priority is based upon order of creation:
   # first created -> highest priority.
