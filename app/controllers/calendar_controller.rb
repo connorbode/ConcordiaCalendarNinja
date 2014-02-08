@@ -1,11 +1,17 @@
+require Rails.root + "lib/assets/error.rb"
+require Rails.root + "lib/assets/timeslot.rb"
+require 'mechanize'
+
 class CalendarController < ApplicationController
+
+  cattr_accessor :timeout
+  @@timeout = 5
+
   def ninja
 
-  	require Rails.root + "lib/assets/error.rb"
-  	require Rails.root + "lib/assets/timeslot.rb"
-  	require 'mechanize'
 
-  	# error types
+  	# did anything go wrong?
+  	error = false
   	@error_types = [
   		Error.new(0, "session parameter missing"),
   		Error.new(1, "invalid session parameter"),
@@ -17,17 +23,19 @@ class CalendarController < ApplicationController
 
   	# validate supplied parameters
   	if params[:session].nil?
-  		response = @error_types[0]
+  		error = 0
+  	elsif not /^[\d]$/ === params[:session]
+  		error = 1
   	elsif not params[:session].to_i.between?(1, 4)
-  		response = @error_types[1]
+  		error = 1
   	elsif params[:myconcordia_username].nil?
-  		response = @error_types[2]
+  		error = 2
   	elsif params[:myconcordia_password].nil?
-  		response = @error_types[3]
+  		error = 3
   	else
   		case params[:session].to_i
   		when 1
-  			# need to update this when I know what summer looks like.. 
+  			# need to update this when I know what happens for spring / summer division of timetables
   			session = "Summer"
   		when 2
   			session = "Summer"
@@ -36,11 +44,48 @@ class CalendarController < ApplicationController
   		when 4
   			session = "Winter"
   		end
-  		response = getSchedule(params[:myconcordia_username], params[:myconcordia_password], session)
+
+  		# attempt to get schedule
+		response = getSchedule(params[:myconcordia_username], params[:myconcordia_password], session)
+
+		# if getSchedule returns an integer, it is an error code
+  		if response.is_a? Integer
+  			error = response
+  		end
   	end
 
+
+  	status = 200
+   	if error.is_a? Integer
+
+   		# set error message
+   		case error
+   		when 0
+	  		response = Error.new(0, "session parameter missing")
+	  	when 1
+	  		response = Error.new(1, "invalid session parameter")
+	  	when 2
+	  		response = Error.new(2, "myconcordia_username parameter missing")
+	  	when 3
+	  		response = Error.new(3, "myconcordia_password parameter missing")
+	  	when 4
+	  		response = Error.new(4, "failed to contact MyConcordia")
+	  	when 5
+	  		response = Error.new(5, "invalid MyConcordia credentials")
+	  	end
+
+	  	# set appropriate status
+   		if error == 4
+   			error 
+   			status = 500
+   		else
+  			status = 400
+  		end
+  	end
+
+
   	# output response
-  	render json: response
+  	render json: response, status: status
   end
 
 
@@ -50,44 +95,54 @@ class CalendarController < ApplicationController
 
   def getSchedule(username, password, term)
   	
-  	# use mechanize to navigate through MyConcordia
-  	agent = Mechanize.new
+  	begin
 
-  	# base page is http, but there is an instant redirect to https, which
-  	# mechanize follows.  fails for some reason when set to https initially.
-  	page = agent.get "http://myconcordia.ca/"
+	  	# use mechanize to navigate through MyConcordia
+	  	agent = Mechanize.new
 
-  	# log user in
-  	form = page.form 'login'
-  	form.userid = username
-  	form.pwd = password
-  	page = agent.submit(form, form.buttons.first)
+	  	# set the agent to timeout after 5 seconds
+	  	agent.read_timeout = @@timeout
 
-  	# get status code
-  	code = page.code.to_i
+	  	# base page is http, but there is an instant redirect to https, which
+	  	# mechanize follows.  fails for some reason when set to https initially.
+	  	page = agent.get "http://myconcordia.ca/"
 
-  	# if the user logged in, then we can see the academic link
-  	links = page.links_with(:text => 'Academic')
-  	if links.length > 0
+	  	# log user in
+	  	form = page.form 'login'
+	  	form.userid = username
+	  	form.pwd = password
+	  	page = agent.submit(form, form.buttons.first)
 
-  		# navigate to timetable
-		page = links[0].click
-	  	page = page.frame_with(name: "TargetContent").click
-	  	page = agent.page.link_with(text: term).click
-	  	page = page.frame_with(name: "TargetContent").click
+	  	# get status code
+	  	code = page.code.to_i
 
-	  	# parse timetable
-	  	return parseTimetable(page.body)
+	  	# if the user logged in, then we can see the academic link
+	  	links = page.links_with(:text => 'Academic')
+	  	if links.length > 0
 
-	else
-		# failed to log in
-		return @error_types[5]
-  	end
+	  		# navigate to timetable
+			page = links[0].click
+		  	page = page.frame_with(name: "TargetContent").click
+		  	page = agent.page.link_with(text: term).click
+		  	page = page.frame_with(name: "TargetContent").click
+
+		  	# parse timetable
+		  	return self.class.parseTimetable(page.body)
+
+		else
+			# failed to log in
+			return 5
+	  	end
+
+	  # catch timeout errors
+	  rescue Net::HTTP::Persistent::Error
+	  	return 4
+	  end
   end
 
 
 
-  def parseTimetable(pageHtml)
+  def self.parseTimetable(pageHtml)
 
   	# use Nokogiri to parse HTML
 	html = Nokogiri::HTML(pageHtml)
