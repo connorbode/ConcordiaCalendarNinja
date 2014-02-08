@@ -1,5 +1,6 @@
 ConcordiaCalendarNinja::Application.routes.draw do
 
+  get '/', to: 'calendar#ninja'
   post '/', to: 'calendar#ninja'
   # The priority is based upon order of creation:
   # first created -> highest priority.
