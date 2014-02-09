@@ -25,6 +25,9 @@ class ConcordiaCalendarNinja.MainController extends ConcordiaCalendarNinja.Appli
 	  	success: (xhr) =>
 	  		console.log xhr
 
+  validateGoogleAccount: ->
+  	hello('google').login
+
   handleError: (error) ->
   	@set 'display', error.description
 

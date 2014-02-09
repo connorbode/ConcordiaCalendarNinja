@@ -13,6 +13,7 @@
 #= require_tree ./models
 #= require_tree ./views
 
+#= require ./../javascripts/hello.js
 Batman.config.pathToHTML = '/assets/html'
 
 class ConcordiaCalendarNinja extends Batman.App
