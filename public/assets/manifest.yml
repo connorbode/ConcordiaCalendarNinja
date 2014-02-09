@@ -1,0 +1,21 @@
+---
+html/main/index.html: html/main/index-3069a17a84a0f4c7c94bdbdfbc45af4f.html
+html/main.html: html/main/index-3069a17a84a0f4c7c94bdbdfbc45af4f.html
+rails.png: rails-c2b6b635960ac0ec78a12f31ec2cd798.png
+rails/index.png: rails-c2b6b635960ac0ec78a12f31ec2cd798.png
+application.js: application-daefdd30732a7aaefc8752b8391e122e.js
+application/index.js: application-daefdd30732a7aaefc8752b8391e122e.js
+application.css: application-1b13569e9620782f423d4cd3ce931750.css
+application/index.css: application-1b13569e9620782f423d4cd3ce931750.css
+batman/bullet.png: batman/bullet-8e1ecba35e5c57db2b3bdf4f32711c86.png
+batman/bullet/index.png: batman/bullet-8e1ecba35e5c57db2b3bdf4f32711c86.png
+batman/content-bg-fade.png: batman/content-bg-fade-a362a383f47b4f6aebb8ff25b04a9e0c.png
+batman/content-bg-fade/index.png: batman/content-bg-fade-a362a383f47b4f6aebb8ff25b04a9e0c.png
+batman/content-bg.png: batman/content-bg-9fc6eb6bab047d0d29963f0c68f19f53.png
+batman/content-bg/index.png: batman/content-bg-9fc6eb6bab047d0d29963f0c68f19f53.png
+batman/header-wrapper-bg.jpg: batman/header-wrapper-bg-e44b29d105fa6890baaf77ceebd5275f.jpg
+batman/header-wrapper-bg/index.jpg: batman/header-wrapper-bg-e44b29d105fa6890baaf77ceebd5275f.jpg
+batman/logo.png: batman/logo-d7be8adcfa58c0b633cfc059e5161932.png
+batman/logo/index.png: batman/logo-d7be8adcfa58c0b633cfc059e5161932.png
+jquery.min.map: jquery.min-388372ef65cc311f6a3df4a6ceac8d22.map
+jquery/index.min.map: jquery.min-388372ef65cc311f6a3df4a6ceac8d22.map
