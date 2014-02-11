@@ -4,17 +4,44 @@ class ConcordiaCalendarNinja.MainController extends ConcordiaCalendarNinja.Appli
   googleAuth = {}
   timeslots = []
   apiKey = 'AIzaSyBDzlWciuiWaIDY5Hdaw5M9WnlLo0_pAsQ'
+  calendarId = ''
 
   index: (params) ->
     @set 'myconcordia_username', ''
     @set 'myconcordia_password', ''
     @set 'session', 3
+
     # parse token if access token is in uri
     if /access_token/i.test(window.location)
       @parseToken window.location
 
+
+
+
+    #id = "7ebovd9dqef6pe61a069a1pifg@group.calendar.google.com"
+
+    # requestData =
+    # {
+    #  "end": {
+    #   "dateTime": "2014-02-11T12:40:00-05:00",
+    #   "timeZone": "America/Montreal"
+    #  },
+    #  "start": {
+    #   "dateTime": "2014-02-11T12:30:00-05:00",
+    #   "timeZone": "America/Montreal"
+    #  },
+    #  "location": "H-354",
+    #  "summary": "COMP 354",
+    #  "recurrence": [
+    #   "RRULE:FREQ=WEEKLY;UNTIL=20140430T000000Z"
+    #  ]
+    # }
+
+
+  # # Returns false if session is not a number ->
+
   getSchedule: ->
-  	alert @get 'session'
+  	session = @get 'session'
   	request = new Batman.Request
   		url: "/"
   		method: "POST"
@@ -29,7 +56,49 @@ class ConcordiaCalendarNinja.MainController extends ConcordiaCalendarNinja.Appli
 	  			error = JSON.parse(xhr.responseText)
 	  			@handleError(error)
 	  	success: (response) =>
-	  		@addSchedule response
+	  		@addSchedule response, session
+
+
+  # addTimeslot: (calendarId, startTime, endTime, location, summary, recurrenceRule)
+  addSchedule: (response, session) ->
+
+    # add the calendar
+    @addCalendar
+
+    # get timeslots
+    timeslots = response
+    
+    # set current date
+    currDate = new Date(Date.now())
+
+    # get the recurrence rule
+    recurrenceRule = @getRecurrenceRule currDate, session
+    
+    # iterate timeslots
+    (
+      # get the start date
+      startDate = @getStartDate t.day, session
+      endDate = new Date(startDate)
+
+      # get the hours & minutes
+      startHour = t.start.substr(0,2)
+      startMin = t.start.substr(3,2)
+      endHour = t.end.substr(0,2)
+      endMin = t.end.substr(3,2)
+
+      # set the hours & minutes
+      startDate.setHours(startHour)
+      startDate.setMinutes(startMin)
+      endDate.setHours(endHour)
+      endDate.setHours(endMin)
+
+      # convert start and end dates to JSON & add time zone difference
+      startTime = startDate.toJSON()[0..-2] + "-05:00"
+      endTime = endDate.toJSON()[0..-2] + "-05:00"
+
+      console.log "start: #{startHour}:#{startMin} end: #{endHour}:#{endMin}"
+
+      ) for t in timeslots
     
   handleError: (error) ->
   	console.log error
@@ -55,16 +124,12 @@ class ConcordiaCalendarNinja.MainController extends ConcordiaCalendarNinja.Appli
     (
       temp2 = t.split "="
       googleAuth[temp2[0]] = temp2[1]
-      # params.push {
-      #   'key': temp2[0],
-      #   'val': temp2[1]
-      # }
     ) for t in temp
-    # googleAuth = params
     console.log googleAuth
 
-  ## COULDN'T FIGURE OUT HOW TO ADD HEADERS TO BATMAN.REQUEST so I used jQuery
-  googleRequest: (url, data) ->
+  
+
+  googleRequest: (url, data, successCallback) ->
     # Authorization header
     authHeader = "#{googleAuth.token_type} #{googleAuth.access_token}"
 
@@ -79,46 +144,135 @@ class ConcordiaCalendarNinja.MainController extends ConcordiaCalendarNinja.Appli
         error: (jqXHR, textStatus, errorThrown) ->
             console.log(jqXHR.responseText)
         success: (data, textStatus, jqXHR) ->
-            $('body').append "Successful AJAX call: #{data}"
+            successCallback data
 
   # Adds the calendar to Google Calendar
   addCalendar: ->
 
-    name = "test"
+    name = "Concordia Schedule"
 
     # URL to post to
     url = 'https://www.googleapis.com/calendar/v3/calendars?key=' + apiKey
-
-
 
     # Post data
     requestData = {
       'summary': name
     }
 
-    @googleRequest url, requestData
+    setId = (data) -> 
+      calendarId = data.id
+      console.log calendarId
+
+    @googleRequest url, requestData, setId 
 
 
-  addTimeslot: ->
 
-    id = "7ebovd9dqef6pe61a069a1pifg@group.calendar.google.com"
-    url = "https://www.googleapis.com/calendar/v3/calendars/#{encodeURIComponent(id)}/events?key=#{apiKey}"
 
-    requestData =
-    {
-     "end": {
-      "dateTime": "2014-02-11T12:40:00-05:00",
-      "timeZone": "America/Montreal"
-     },
-     "start": {
-      "dateTime": "2014-02-11T12:30:00-05:00",
-      "timeZone": "America/Montreal"
-     },
-     "location": "H-354",
-     "summary": "COMP 354",
-     "recurrence": [
-      "RRULE:FREQ=WEEKLY;UNTIL=20140430T000000Z"
-     ]
+    #id = "7ebovd9dqef6pe61a069a1pifg@group.calendar.google.com"
+
+    # requestData =
+    # {
+    #  "end": {
+    #   "dateTime": "2014-02-11T12:40:00-05:00",
+    #   "timeZone": "America/Montreal"
+    #  },
+    #  "start": {
+    #   "dateTime": "2014-02-11T12:30:00-05:00",
+    #   "timeZone": "America/Montreal"
+    #  },
+    #  "location": "H-354",
+    #  "summary": "COMP 354",
+    #  "recurrence": [
+    #   "RRULE:FREQ=WEEKLY;UNTIL=20140430T000000Z"
+    #  ]
+    # }
+
+
+  # Returns false if session is not a number
+  addTimeslot: (calendarId, startTime, endTime, location, summary, recurrenceRule) ->
+
+    # request URL
+    url = "https://www.googleapis.com/calendar/v3/calendars/#{encodeURIComponent(calendarId)}/events?key=#{apiKey}"
+
+    # request data
+    requestData = {
+      'start': {
+        'dateTime': startTime,
+        'timeZone': 'America/Montreal'
+      },
+      'end': {
+        'dateTime': endTime,
+        'timeZone': 'America/Montreal'
+      },
+      'location': location,
+      'summary': summary,
+      'recurrence': [
+        recurrenceRule
+      ]
     }
 
+    # send request
     @googleRequest url, requestData
+
+
+
+
+  # currentDate should be Date.now
+  getRecurrenceRule: (currentDate, session) ->
+
+    # set month and day
+    endDate = new Date(Date.now())
+    switch session
+      when 3
+        endDate.setMonth 11
+        endDate.setDate 25
+      when 4
+        endDate.setMonth 3
+        endDate.setDate 30
+
+    # set year
+    endDate = @setYear(new Date(Date.now()), session, endDate)
+
+    # convert to string
+    json = endDate.toJSON()
+    str = json.substr(0,4)+json.substr(5,2)+json.substr(8,3)+'000000Z'
+    rule = "RRULE:FREQ=WEEKLY;UNTIL=#{str}"
+
+    return rule
+
+  # get the first xday of the session (ie. first Tuesday of the Fall semester)
+  getStartDate: (day, session) ->
+    # get the current date
+    date = new Date(Date.now())
+
+    # set the proper year
+    date = @setYear date, session, date
+
+    # set the month
+    switch session
+      when 3 then date.setMonth 8
+      when 4 then date.setMonth 0
+
+    # set the day
+    date.setDate 1
+
+    givenDay = date.getDay()
+
+    while date.getDay() != day
+      date.setDate(date.getDate() + 1)
+
+    return date
+
+  setYear: (currentDate, session, date) ->    
+    if currentDate.getMonth() <= 3
+      if session in [1..3]
+        date.setFullYear(currentDate.getFullYear() - 1)
+      else
+        date.setFullYear(currentDate.getFullYear())
+    else
+      if session in [1..3]
+        date.setFullYear currentDate.getFullYear()
+      else
+        date.setFullYear(currentDate.getFullYear() + 1)
+
+    return date
