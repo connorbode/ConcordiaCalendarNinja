@@ -32,5 +32,6 @@ class ConcordiaCalendarNinja extends Batman.App
   # @route 'apps/private', 'apps#private', as: 'privateApps'
 
   @root 'main#index'
+  @route 'google-auth', 'googleAuth#index'
 
 (global ? window).ConcordiaCalendarNinja = ConcordiaCalendarNinja
