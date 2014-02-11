@@ -93,12 +93,13 @@ class ConcordiaCalendarNinja.MainController extends ConcordiaCalendarNinja.Appli
     # Perform request using AJAX
     $.ajax url,
         type: 'POST'
-        dataType: 'application/json'
-        data: requestData
+        contentType: 'application/json; charset=utf-8'
+        dataType: 'json'
+        data: JSON.stringify(requestData)
         beforeSend: (xhr) ->
           xhr.setRequestHeader 'Authorization', authHeader
         error: (jqXHR, textStatus, errorThrown) ->
-            $('body').append "AJAX Error: #{textStatus}"
+            console.log(jqXHR.responseText)
         success: (data, textStatus, jqXHR) ->
             $('body').append "Successful AJAX call: #{data}"
 
