@@ -63,6 +63,24 @@ class ConcordiaCalendarNinja.MainController extends ConcordiaCalendarNinja.Appli
     # googleAuth = params
     console.log googleAuth
 
+  ## COULDN'T FIGURE OUT HOW TO ADD HEADERS TO BATMAN.REQUEST so I used jQuery
+  googleRequest: (url, data) ->
+    # Authorization header
+    authHeader = "#{googleAuth.token_type} #{googleAuth.access_token}"
+
+    # Perform request using AJAX
+    $.ajax url,
+        type: 'POST'
+        contentType: 'application/json; charset=utf-8'
+        dataType: 'json'
+        data: JSON.stringify(data)
+        beforeSend: (xhr) ->
+          xhr.setRequestHeader 'Authorization', authHeader
+        error: (jqXHR, textStatus, errorThrown) ->
+            console.log(jqXHR.responseText)
+        success: (data, textStatus, jqXHR) ->
+            $('body').append "Successful AJAX call: #{data}"
+
   # Adds the calendar to Google Calendar
   addCalendar: ->
 
@@ -71,42 +89,36 @@ class ConcordiaCalendarNinja.MainController extends ConcordiaCalendarNinja.Appli
     # URL to post to
     url = 'https://www.googleapis.com/calendar/v3/calendars?key=' + apiKey
 
+
+
     # Post data
     requestData = {
       'summary': name
     }
 
-    # Authorization header
-    authHeader = "#{googleAuth.token_type} #{googleAuth.access_token}"
-
-    ## COULDN'T FIGURE OUT HOW TO ADD HEADERS TO BATMAN.REQUEST
-    # Create the request
-    #request = new Batman.Request
-    #  url: url
-    #  method: 'POST'
-    #  data: 
-    ## COULDN'T FIGURE OUT HOW TO ADD HEADERS TO BATMAN.REQUEST
-
-    console.log "auth header: #{authHeader}"
-    console.log requestData
-
-    # Perform request using AJAX
-    $.ajax url,
-        type: 'POST'
-        contentType: 'application/json; charset=utf-8'
-        dataType: 'json'
-        data: JSON.stringify(requestData)
-        beforeSend: (xhr) ->
-          xhr.setRequestHeader 'Authorization', authHeader
-        error: (jqXHR, textStatus, errorThrown) ->
-            console.log(jqXHR.responseText)
-        success: (data, textStatus, jqXHR) ->
-            $('body').append "Successful AJAX call: #{data}"
-
-  addSchedule: (response) ->
-    timeslots = response
-    console.log timeslots
+    @googleRequest url, requestData
 
 
-  @accessor 'fullName', ->
-    "#{@get('firstName')} #{@get('lastName')}"
+  addTimeslot: ->
+
+    id = "7ebovd9dqef6pe61a069a1pifg@group.calendar.google.com"
+    url = "https://www.googleapis.com/calendar/v3/calendars/#{encodeURIComponent(id)}/events?key=#{apiKey}"
+
+    requestData =
+    {
+     "end": {
+      "dateTime": "2014-02-11T12:40:00-05:00",
+      "timeZone": "America/Montreal"
+     },
+     "start": {
+      "dateTime": "2014-02-11T12:30:00-05:00",
+      "timeZone": "America/Montreal"
+     },
+     "location": "H-354",
+     "summary": "COMP 354",
+     "recurrence": [
+      "RRULE:FREQ=WEEKLY;UNTIL=20140430T000000Z"
+     ]
+    }
+
+    @googleRequest url, requestData

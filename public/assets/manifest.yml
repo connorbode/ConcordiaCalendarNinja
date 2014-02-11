@@ -1,8 +1,8 @@
 ---
 html/google_auth/index.html: html/google_auth/index-1fb09db4dbc0fc1d7a1d91dc66b072d4.html
 html/google_auth.html: html/google_auth/index-1fb09db4dbc0fc1d7a1d91dc66b072d4.html
-html/main/index.html: html/main/index-a037aa996b661f0d5de37c656e1bb9a6.html
-html/main.html: html/main/index-a037aa996b661f0d5de37c656e1bb9a6.html
+html/main/index.html: html/main/index-04839d38e7ac6213a34743ee17079e63.html
+html/main.html: html/main/index-04839d38e7ac6213a34743ee17079e63.html
 rails.png: rails-c2b6b635960ac0ec78a12f31ec2cd798.png
 rails/index.png: rails-c2b6b635960ac0ec78a12f31ec2cd798.png
 application.js: application-d2267ca477466437ec3115b91cc53739.js
