@@ -108,7 +108,7 @@ class ConcordiaCalendarNinja.MainController extends ConcordiaCalendarNinja.Appli
       'summary': name
     }
 
-    setId = (data) -> 
+    setId = (data) => 
       calendarId = data.id
       @addTimeslots()
 
