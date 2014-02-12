@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Concordia Calendar Ninja : Scrape your MyConcordia course schedule and import it to Google Calendar! " />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Concordia Calendar Ninja</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/connorbode/ConcordiaCalendarNinja">View on GitHub</a>
+
+          <h1 id="project_title">Concordia Calendar Ninja</h1>
+          <h2 id="project_tagline">Scrape your MyConcordia course schedule and import it to Google Calendar! </h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/connorbode/ConcordiaCalendarNinja/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/connorbode/ConcordiaCalendarNinja/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>
+<a name="concordia-course-ninja" class="anchor" href="#concordia-course-ninja"><span class="octicon octicon-link"></span></a>Concordia Course Ninja</h2>
+
+<p>The purpose of this project is to log in to a Concordia student's MyConcordia profile, retrieve that student's course schedule for a given semester and import the schedule to a Google Calendar account</p>
+
+<p><strong>This project is currently incomplete</strong></p>
+
+<p>The application has been designed for deployment on Heroku.  The application has two routes: <code>GET /</code> and <code>POST /</code>.  The <code>POST</code> route (described in more detail below) accepts a student's MyConcordia credentials and a school semester as parameters and returns the students schedule in a JSON array of <a href="https://github.com/connorbode/ConcordiaCalendarNinja/blob/master/lib/assets/timeslot.rb"><strong>Timeslot</strong></a> objects.  The <code>GET</code> route returns a Batman.js application which interacts with the server-side</p>
+
+<h4>
+<a name="server-side" class="anchor" href="#server-side"><span class="octicon octicon-link"></span></a>Server-side</h4>
+
+<p>The server-side application is built using Ruby on Rails.  The main functionality is done using the <a href="https://github.com/connorbode/ConcordiaCalendarNinja/blob/master/app/controllers/calendar_controller.rb">calendar controller</a>.  The <code>POST /</code> route calls <code>CalendarController::ninja</code>, which uses the Mechanize gem to crawl through the Concordia website to retrieve the students schedule.  After the schedule is received, the Nokogiri gem is used to parse the schedule into Timeslots, which are then rendered as a JSON response. </p>
+
+<p>The following is a diagram of the server flow:</p>
+
+<p><a href="http://oi57.tinypic.com/25qw6r8.jpg"><img src="http://oi57.tinypic.com/25qw6r8.jpg" alt=""></a></p>
+
+<p>The <a href="https://github.com/connorbode/ConcordiaCalendarNinja/blob/master/test/functional/calendar_controller_test.rb">test code for the Calendar Controller</a> tests the following:</p>
+
+<ul>
+<li>the appropriate error is returned if a request does not include the session or includes an invalid session (session being an integer representation of the desired school term)</li>
+<li>the appropriate errors are returned if either the MyConcordia username or password are missing</li>
+<li>the appropriate error is returned if Mechanize times out when contacting MyConcordia</li>
+<li>the appropriate error is returned if the MyConcordia credentials were invalid</li>
+<li>an array of timeslots are returned if the algorithm execution succeeds</li>
+</ul><h4>
+<a name="client" class="anchor" href="#client"><span class="octicon octicon-link"></span></a>Client</h4>
+
+<p>The client-side is currently incomplete</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Concordia Calendar Ninja maintained by <a href="https://github.com/connorbode">connorbode</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
