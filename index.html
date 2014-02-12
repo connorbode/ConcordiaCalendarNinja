@@ -45,10 +45,6 @@
 
 <p>The server-side application is built using Ruby on Rails.  The main functionality is done using the <a href="https://github.com/connorbode/ConcordiaCalendarNinja/blob/master/app/controllers/calendar_controller.rb">calendar controller</a>.  The <code>POST /</code> route calls <code>CalendarController::ninja</code>, which uses the Mechanize gem to crawl through the Concordia website to retrieve the students schedule.  After the schedule is received, the Nokogiri gem is used to parse the schedule into Timeslots, which are then rendered as a JSON response. </p>
 
-<p>The following is a diagram of the server flow:</p>
-
-<p><a href="http://oi57.tinypic.com/25qw6r8.jpg"><img src="http://oi57.tinypic.com/25qw6r8.jpg" alt=""></a></p>
-
 <p>The <a href="https://github.com/connorbode/ConcordiaCalendarNinja/blob/master/test/functional/calendar_controller_test.rb">test code for the Calendar Controller</a> tests the following:</p>
 
 <ul>
@@ -57,7 +53,14 @@
 <li>the appropriate error is returned if Mechanize times out when contacting MyConcordia</li>
 <li>the appropriate error is returned if the MyConcordia credentials were invalid</li>
 <li>an array of timeslots are returned if the algorithm execution succeeds</li>
-</ul><h4>
+</ul>
+
+<p>The following is a diagram of the server flow:</p>
+
+<p><a href="http://oi57.tinypic.com/25qw6r8.jpg"><img src="http://oi57.tinypic.com/25qw6r8.jpg" alt=""></a></p>
+
+
+<h4>
 <a name="client" class="anchor" href="#client"><span class="octicon octicon-link"></span></a>Client</h4>
 
 <p>The client-side is currently incomplete</p>
