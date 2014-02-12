@@ -5,6 +5,7 @@ class ConcordiaCalendarNinja.MainController extends ConcordiaCalendarNinja.Appli
   timeslots = []
   apiKey = 'AIzaSyBDzlWciuiWaIDY5Hdaw5M9WnlLo0_pAsQ'
   calendarId = ''
+  session = ''
 
   index: (params) ->
     @set 'myconcordia_username', ''
@@ -15,27 +16,6 @@ class ConcordiaCalendarNinja.MainController extends ConcordiaCalendarNinja.Appli
     if /access_token/i.test(window.location)
       @parseToken window.location
 
-
-
-
-    #id = "7ebovd9dqef6pe61a069a1pifg@group.calendar.google.com"
-
-    # requestData =
-    # {
-    #  "end": {
-    #   "dateTime": "2014-02-11T12:40:00-05:00",
-    #   "timeZone": "America/Montreal"
-    #  },
-    #  "start": {
-    #   "dateTime": "2014-02-11T12:30:00-05:00",
-    #   "timeZone": "America/Montreal"
-    #  },
-    #  "location": "H-354",
-    #  "summary": "COMP 354",
-    #  "recurrence": [
-    #   "RRULE:FREQ=WEEKLY;UNTIL=20140430T000000Z"
-    #  ]
-    # }
 
 
   # # Returns false if session is not a number ->
@@ -56,49 +36,18 @@ class ConcordiaCalendarNinja.MainController extends ConcordiaCalendarNinja.Appli
 	  			error = JSON.parse(xhr.responseText)
 	  			@handleError(error)
 	  	success: (response) =>
-	  		@addSchedule response, session
+	  		@receivedSchedule response
 
 
   # addTimeslot: (calendarId, startTime, endTime, location, summary, recurrenceRule)
-  addSchedule: (response, session) ->
+  receivedSchedule: (response) ->
+
+    # set timeslots
+    timeslots = response    
 
     # add the calendar
-    @addCalendar
-
-    # get timeslots
-    timeslots = response
+    @addCalendar()
     
-    # set current date
-    currDate = new Date(Date.now())
-
-    # get the recurrence rule
-    recurrenceRule = @getRecurrenceRule currDate, session
-    
-    # iterate timeslots
-    (
-      # get the start date
-      startDate = @getStartDate t.day, session
-      endDate = new Date(startDate)
-
-      # get the hours & minutes
-      startHour = t.start.substr(0,2)
-      startMin = t.start.substr(3,2)
-      endHour = t.end.substr(0,2)
-      endMin = t.end.substr(3,2)
-
-      # set the hours & minutes
-      startDate.setHours(startHour)
-      startDate.setMinutes(startMin)
-      endDate.setHours(endHour)
-      endDate.setHours(endMin)
-
-      # convert start and end dates to JSON & add time zone difference
-      startTime = startDate.toJSON()[0..-2] + "-05:00"
-      endTime = endDate.toJSON()[0..-2] + "-05:00"
-
-      console.log "start: #{startHour}:#{startMin} end: #{endHour}:#{endMin}"
-
-      ) for t in timeslots
     
   handleError: (error) ->
   	console.log error
@@ -161,11 +110,48 @@ class ConcordiaCalendarNinja.MainController extends ConcordiaCalendarNinja.Appli
 
     setId = (data) -> 
       calendarId = data.id
-      console.log calendarId
+      @addTimeslots()
 
     @googleRequest url, requestData, setId 
 
 
+  # Adds timeslots
+  addTimeslots: ->
+
+    # set current date
+    currDate = new Date(Date.now())
+
+    # get the recurrence rule
+    recurrenceRule = @getRecurrenceRule currDate, session
+    
+    # iterate timeslots
+    (
+      # get the start date
+      startDate = @getStartDate t.day, session
+      endDate = new Date(startDate)
+
+      # get the hours & minutes
+      startHour = t.start.substr(0,2)
+      startMin = t.start.substr(3,2)
+      endHour = t.end.substr(0,2)
+      endMin = t.end.substr(3,2)
+
+      # set the hours & minutes
+      startDate.setHours(startHour)
+      startDate.setMinutes(startMin)
+      endDate.setHours(endHour)
+      endDate.setHours(endMin)
+
+      # convert start and end dates to JSON & add time zone difference
+      startTime = startDate.toJSON()[0..-2] + "-05:00"
+      endTime = endDate.toJSON()[0..-2] + "-05:00"
+
+      @addTimeslot(calendarId, startTime, endTime, t.details, t.title, recurrenceRule)
+
+    ) for t in timeslots
+
+
+  # addTimeslot: (calendarId, startTime, endTime, location, summary, recurrenceRule) ->
 
 
     #id = "7ebovd9dqef6pe61a069a1pifg@group.calendar.google.com"
