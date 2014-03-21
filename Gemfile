@@ -25,6 +25,12 @@ gem 'mechanize'
 gem 'improved-rack-throttle'
 gem 'batman-rails'
 
+
+group :development do
+  gem 'pry'
+  gem 'mocha'
+end
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
