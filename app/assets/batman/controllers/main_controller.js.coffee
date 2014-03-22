@@ -16,6 +16,8 @@ class ConcordiaCalendarNinja.MainController extends ConcordiaCalendarNinja.Appli
     if /access_token/i.test(window.location)
       @parseToken window.location
 
+    console.log (@getStartDate 3, 3).toJSON()
+
 
 
   # # Returns false if session is not a number ->
@@ -44,6 +46,7 @@ class ConcordiaCalendarNinja.MainController extends ConcordiaCalendarNinja.Appli
 
     # set timeslots
     timeslots = response    
+    console.log timeslots
 
     # add the calendar
     @addCalendar()
@@ -75,8 +78,6 @@ class ConcordiaCalendarNinja.MainController extends ConcordiaCalendarNinja.Appli
       googleAuth[temp2[0]] = temp2[1]
     ) for t in temp
     console.log googleAuth
-
-  
 
   googleRequest: (url, data, successCallback) ->
     # Authorization header
@@ -112,7 +113,8 @@ class ConcordiaCalendarNinja.MainController extends ConcordiaCalendarNinja.Appli
       calendarId = data.id
       @addTimeslots()
 
-    @googleRequest url, requestData, setId 
+    @addTimeslots()
+    #@googleRequest url, requestData, setId 
 
 
   # Adds timeslots
@@ -123,6 +125,8 @@ class ConcordiaCalendarNinja.MainController extends ConcordiaCalendarNinja.Appli
 
     # get the recurrence rule
     recurrenceRule = @getRecurrenceRule currDate, session
+
+    timeslot = [timeslots[0]]
     
     # iterate timeslots
     (
@@ -137,18 +141,24 @@ class ConcordiaCalendarNinja.MainController extends ConcordiaCalendarNinja.Appli
       endMin = t.end.substr(3,2)
 
       # set the hours & minutes
-      startDate.setHours(startHour)
-      startDate.setMinutes(startMin)
-      endDate.setHours(endHour)
-      endDate.setHours(endMin)
+      console.log "toJSON: " + startDate.toJSON()
+      console.log "pritn: " + startDate.getFullYear() + startDate.getMonth() + startDate.getDate()
+      console.log "start hour #{startHour} start minutes #{startMin}"
+      startDate.setHours(startHour, startMin)
+      endDate.setHours(endHour, endMin)
+      # endDate.setHours(endHour)
+      # endDate.setHours(endMin)
 
       # convert start and end dates to JSON & add time zone difference
       startTime = startDate.toJSON()[0..-2] + "-05:00"
       endTime = endDate.toJSON()[0..-2] + "-05:00"
 
-      @addTimeslot(calendarId, startTime, endTime, t.details, t.title, recurrenceRule)
+      console.log "start time: #{startTime}"
+      console.log "end time: #{endTime}"
 
-    ) for t in timeslots
+      # @addTimeslot(calendarId, startTime, endTime, t.details, t.title, recurrenceRule)
+
+    ) for t in timeslot
 
 
   # addTimeslot: (calendarId, startTime, endTime, location, summary, recurrenceRule) ->
@@ -230,6 +240,7 @@ class ConcordiaCalendarNinja.MainController extends ConcordiaCalendarNinja.Appli
   getStartDate: (day, session) ->
     # get the current date
     date = new Date(Date.now())
+    date.setHours(0,0,0,0)
 
     # set the proper year
     date = @setYear date, session, date
