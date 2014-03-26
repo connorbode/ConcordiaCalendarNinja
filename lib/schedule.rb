@@ -11,6 +11,7 @@ class Schedule
   def initialize(username, password, term)
     @username, @password, @term = username, password, term
     @recurrenceRule = getRecurrenceRule
+    @year = Time.now.year
   end
 
   def fetch
@@ -69,10 +70,8 @@ class Schedule
         course = colText[2..9]
         details = colText[16..-2]
         timeslots << {
-            :startTime => startTime,
-            :endTime => endTime,
-            :day => day,
-            :startDate => getStartDate,
+            :startTime => getTime(startTime, day),
+            :endTime => getTime(endTime, day),
             :recurrenceRule => @recurrenceRule,
             :course => course,
             :details => details
@@ -83,18 +82,23 @@ class Schedule
     timeslots
   end
 
-  def getStartDate
+  def getTime time, day
+    if @term == "Winter"
+      start_day = Date.new(@year, 1, 1)
+    end
 
+    while day != start_day.wday
+      start_day = start_day.next
+    end
+
+    start_day.strftime("%Y-%m-%d") + "T#{time}:00-05:00"
   end
 
   def getRecurrenceRule
-    year = Time.now.year
     if @term == "Winter"
-      end_date = Date.new(year, 4, 15)
+      end_date = Date.new(@year, 4, 15)
     end
 
-    str = end_date.year.to_s + end_date.month.to_s + end_date.day.to_s + "T000000Z"
-
-    "RRULE:FREQ=WEEKLY;UNTIL=#{str}"
+    "RRULE:FREQ=WEEKLY;UNTIL=" + end_date.strftime("%Y-%m-%d")
   end
 end
