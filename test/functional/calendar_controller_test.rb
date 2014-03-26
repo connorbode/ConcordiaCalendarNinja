@@ -100,4 +100,9 @@ class CalendarControllerTest < ActionController::TestCase
     assert_response :ok
     assert_equal 7, actual.length
   end
+
+  test "returns the right recurrence rule" do
+    schedule = Schedule.new "fake", "fake", "Winter"
+    assert_equal "RRULE:FREQ=WEEKLY;UNTIL=20140415T000000Z", schedule.recurrenceRule
+  end
 end
