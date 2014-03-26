@@ -1,17 +1,24 @@
 require 'date'
+require 'net/http'
+require 'net/http/persistent'
+require 'mechanize'
+require 'nokogiri'
 
 class Schedule
-
-  cattr_accessor :timeout
-  self.timeout = 5
 
   attr_reader :username, :password, :term, :recurrenceRule
   attr_accessor :html
 
+
   def initialize(username, password, term)
     @username, @password, @term = username, password, term
-    @recurrenceRule = getRecurrenceRule
     @year = Time.now.year
+    @recurrenceRule = getRecurrenceRule
+    @@timeout = 5
+  end
+
+  def timeout
+    @@timeout
   end
 
   def fetch
@@ -70,6 +77,7 @@ class Schedule
         course = colText[2..9]
         details = colText[16..-2]
         timeslots << {
+            :day => day,
             :startTime => getTime(startTime, day),
             :endTime => getTime(endTime, day),
             :recurrenceRule => @recurrenceRule,
@@ -91,14 +99,14 @@ class Schedule
       start_day = start_day.next
     end
 
-    start_day.strftime("%Y-%m-%d") + "T#{time}:00-05:00"
+    start_day.to_time.strftime("%Y-%m-%d") + "T#{time}:00-05:00"
   end
 
   def getRecurrenceRule
-    if @term == "Winter"
-      end_date = Date.new(@year, 4, 15)
-    end
 
-    "RRULE:FREQ=WEEKLY;UNTIL=" + end_date.strftime("%Y-%m-%d")
+    # fix this
+    end_date = Date.new(2014, 4, 15)
+    
+    "RRULE:FREQ=WEEKLY;UNTIL=" + end_date.to_time.strftime("%Y-%m-%d")
   end
 end

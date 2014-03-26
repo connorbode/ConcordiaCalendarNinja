@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+gem 'sinatra'
+gem 'net-http-persistent'
+
 gem 'rails', '3.2.13'
 
 # Bundle edge Rails instead:
