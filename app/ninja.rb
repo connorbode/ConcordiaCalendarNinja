@@ -15,7 +15,7 @@ get '/ninja/:username/:password/:term' do
 end
 
 get '/' do
-  "hello!"
+  File.read(File.join('public', 'index.html'))
 end
 
 def ninja
