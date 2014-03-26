@@ -1,0 +1,20 @@
+{
+  "name": "calendarNinja",
+  "version": "0.0.0",
+  "authors": [
+    "Connor Bode <connor.bode@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap.css": "~2.3.2",
+    "jquery": "~2.1.0"
+  }
+}

@@ -1,20 +1,21 @@
+require 'thin'
 require 'sinatra'
 require 'json'
 
 require File.join(File.dirname(__FILE__), '..', 'lib', 'schedule.rb')
 
-set :server, 'webrick'
+set :bind, "0.0.0.0"
+set :server, 'thin'
 
 class InvalidRequest < StandardError
 end
 
-get '/' do
-  "hello there!"
-  Schedule.new 'f','f','Winter'
-end
-
 get '/ninja/:username/:password/:term' do
   ninja
+end
+
+get '/' do
+  "hello!"
 end
 
 def ninja
