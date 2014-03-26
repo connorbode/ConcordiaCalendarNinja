@@ -70,20 +70,22 @@ class Schedule
     timeslots = []
     h.css("tr").each do |row|
       day = 0
-      row.css("td.cusistablecontent").each do |col|
-        colText = col.text
-        startTime = colText.slice!(/Start Time:\d{2}:\d{2}/).split(//).last(5).join
-        endTime = colText.slice!(/End Time:\d{2}:\d{2}/).split(//).last(5).join
-        course = colText[2..9]
-        details = colText[16..-2]
-        timeslots << {
-            :day => day,
-            :startTime => getTime(startTime, day),
-            :endTime => getTime(endTime, day),
-            :recurrenceRule => @recurrenceRule,
-            :course => course,
-            :details => details
-          }
+      row.css("td").each do |col|
+        if col.attr('class') == "cusistablecontent"
+          colText = col.text
+          startTime = colText.slice!(/Start Time:\d{2}:\d{2}/).split(//).last(5).join
+          endTime = colText.slice!(/End Time:\d{2}:\d{2}/).split(//).last(5).join
+          course = colText[2..9]
+          details = colText[16..-2]
+          timeslots << {
+              :day => day,
+              :startTime => getTime(startTime, day),
+              :endTime => getTime(endTime, day),
+              :recurrenceRule => @recurrenceRule,
+              :course => course,
+              :details => details
+            }
+        end
         day += 1
       end
     end
