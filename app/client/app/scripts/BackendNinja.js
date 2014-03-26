@@ -1,7 +1,9 @@
-var BackendNinja = function() {
+var BackendNinja = function () {
+    
+    "use strict";
   
   // the service url
-  var url = '/';
+    var url = '/';
   
   /**
    * Retrieves a Concordia user's schedule in the form of timeslots
