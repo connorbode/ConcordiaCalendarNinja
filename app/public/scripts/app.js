@@ -6,9 +6,20 @@ var backend = new BackendNinja();
 $('#start').on('click', function() {
 	var username = $('#username').val();
 	var password = $('#password').val();
-	backend.getTimeslots(username, password, "Winter", function(data) {
-	    console.log(data);
-	});
+
+  var timeslotParams = {
+    'username': username,
+    'password': password,
+    'term': "Winter",
+    'success': function(data, status, xhr) {
+      console.log(data);
+    },
+    'error': function(xhr, status, error) {
+      console.log(error);
+    }
+  }
+
+	backend.getTimeslots(timeslotParams);
 });
 
 

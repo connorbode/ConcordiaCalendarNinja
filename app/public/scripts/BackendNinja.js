@@ -8,15 +8,13 @@ var BackendNinja = function () {
   /**
    * Retrieves a Concordia user's schedule in the form of timeslots
    */
-  this.getTimeslots = function(username, password, term, callback) {
+  this.getTimeslots = function(params) {
     
     var data = {
-      'username': username,
-      'password': password,
-      'term': term
+      'username': params.username,
+      'password': params.password,
+      'term': params.term
     }
-
-    console.log(JSON.stringify(data));
       
     $.ajax({
       'url': url,
@@ -24,12 +22,10 @@ var BackendNinja = function () {
       'crossDomain': true,
       'data': data,
       'success': function(data, status, xhr) {
-        callback(data);
+        params.success(data, status, xhr);
       },
       'error': function(xhr, status, error) {
-        console.log("ERROR!");
-        console.log(xhr);
-        console.log(status);
+        params.error(xhr, status, error);
       }
     });
   }
