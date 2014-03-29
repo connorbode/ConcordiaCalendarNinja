@@ -6,7 +6,7 @@ var backend = new BackendNinja();
 $('#start').on('click', function() {
 	var username = $('#username').val();
 	var password = $('#password').val();
-	backend.getTimeslots(username, password, 2, function(data) {
+	backend.getTimeslots(username, password, "Winter", function(data) {
 	    console.log(data);
 	});
 });

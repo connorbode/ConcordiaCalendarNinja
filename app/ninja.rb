@@ -18,10 +18,15 @@ get '/' do
   File.read(File.join('public', 'index.html'))
 end
 
+post '/' do
+  ninja
+end
+
 def ninja
   content_type :json
 
   schedule = Schedule.new params[:username], params[:password], params[:term]
+
   h = schedule.fetch
   schedule.response.to_json
 

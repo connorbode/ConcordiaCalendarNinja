@@ -8,21 +8,21 @@ var BackendNinja = function () {
   /**
    * Retrieves a Concordia user's schedule in the form of timeslots
    */
-  this.getTimeslots = function(username, password, session, callback) {
+  this.getTimeslots = function(username, password, term, callback) {
     
     var data = {
-      'myconcordia_username': username,
-      'myconcordia_password': password,
-      'session': session
+      'username': username,
+      'password': password,
+      'term': term
     }
+
+    console.log(JSON.stringify(data));
       
     $.ajax({
       'url': url,
       'type': 'POST',
       'crossDomain': true,
-      'dataType': 'json',
-      'data': JSON.stringify(data),
-      'contentType': 'application/json; charset=utf-8',
+      'data': data,
       'success': function(data, status, xhr) {
         callback(data);
       },
