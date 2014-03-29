@@ -1,1 +1,0 @@
-class ConcordiaCalendarNinja.ApplicationController extends Batman.Controller
