@@ -1,24 +1,62 @@
 <html>
-    <head>
-        <link rel='stylesheet' href='bower_components/bootstrap.css/css/bootstrap.min.css' />
-        <script src='bower_components/jquery/dist/jquery.min.js'></script>
-        <script src='bower_components/bootstrap.css/js/bootstrap.min.js'></script>
-        
-    </head>
-    <body>
-    
-        <!-- to be changed -->
-        <center>
-            Username: <input type="text" id="username" /> <br />
-            Password: <input type="password" id="password" /> <br />
-            <button id="start" class="btn btn-primary">Import Calendar</button>
-        </center>
+  <head>
+    <link rel='stylesheet' href='bower_components/bootstrap/dist/css/bootstrap.min.css' />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='styles/main.css' rel='stylesheet' type='text/css'>
+    <script src='bower_components/jquery/dist/jquery.min.js'></script>
+    <script src='bower_components/bootstrap/dist/js/bootstrap.min.js'></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="page-header">
+        <h1>
+          <span class="glyphicon glyphicon-calendar"></span>
+          Concordia Calendar Ninja 
+          <small>by Connor Bode</small>
+        </h1>
+      </div>
+      <div class="well well-lg col-sm-6 col-sm-offset-3">
 
-        
-        <script src='scripts/GoogleAuth.js'></script>
-        <script src='scripts/GoogleCalendar.js'></script>
-        <script src='scripts/BackendNinja.js'></script>
-        <script src='scripts/app.js'></script>
-        
-    </body>
+        <!-- Hi! -->
+        <div id="step0">
+          <h1>Hi there!</h1>
+          <p>The Concordia Calendar Ninja is a little side-project of mine that logs in to your MyConcordia portal, grabs your schedule and adds it to your Google Calendar.</p>
+          <center>
+            <p><a class="btn btn-primary btn-lg" id="get-started-btn">Get Started</a></p>
+          </center>
+        </div>
+
+        <!-- step 1 -->
+        <div id="step1">
+          <h1>First, let's grab your schedule</h1>
+          <p>Enter your MyConcordia login details below.</p>
+          <p>
+          Username: <input type="text" id="username" class="form-control"/> <br />
+          Password: <input type="password" id="password" class="form-control" /> <br />
+          <center>
+            <p><a class="btn btn-primary btn-lg" id="get-schedule-btn">Steal Schedule</a></p>
+            <p>
+              <a
+                id="is-this-safe-btn" 
+                data-container="body"
+                data-toggle="tooltip" 
+                data-placement="bottom" 
+                data-content="Fill this out">
+                Is this safe??
+              </a>
+            </p>
+          </center>
+        </div>
+
+
+      </div>
+    </div>
+
+    
+    <script src='scripts/GoogleAuth.js'></script>
+    <script src='scripts/GoogleCalendar.js'></script>
+    <script src='scripts/BackendNinja.js'></script>
+    <script src='scripts/app.js'></script>
+      
+  </body>
 </html>

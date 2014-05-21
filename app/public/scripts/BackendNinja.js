@@ -16,17 +16,11 @@ var BackendNinja = function () {
       'term': params.term
     }
       
-    $.ajax({
+    return $.ajax({
       'url': url,
       'type': 'POST',
       'crossDomain': true,
-      'data': data,
-      'success': function(data, status, xhr) {
-        params.success(data, status, xhr);
-      },
-      'error': function(xhr, status, error) {
-        params.error(xhr, status, error);
-      }
+      'data': data
     });
   }
 }
