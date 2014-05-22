@@ -67,6 +67,7 @@ class Schedule
   def response
     # use Nokogiri to parse HTML
     h = Nokogiri::HTML(html)
+    
     timeslots = []
     h.css("tr").each do |row|
       day = 0

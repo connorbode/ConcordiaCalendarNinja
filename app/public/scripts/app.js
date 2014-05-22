@@ -9,6 +9,30 @@ var app = {
   // initializes the app
   init: function () {
     $('#step1').css('display', 'none');
+    $('#step1spinnercontainer').css('display', 'none');
+    $('#step2').css('display', 'none');
+
+    // start spinner
+    var opts = {
+      lines: 13,
+      length: 20,
+      width: 10,
+      radius: 30,
+      corners: 1,
+      rotate: 0,
+      direction: 1,
+      color: '#000',
+      speed: 1,
+      trail: 60,
+      shadow: false,
+      hwaccel: false,
+      className: 'spinner',
+      zIndex: 2e9,
+      top: '50%',
+      left: '50%'
+    };
+    var target = $('#step1spinner')[0];
+    var spinner = new Spinner(opts).spin(target);
   },
 
   // brings the user to the first step
@@ -24,19 +48,25 @@ var app = {
     var credentials = {
       username: $('#username').val(),
       password: $('#password').val(),
-      term: "Fall"
+      term: "Winter"
     };
+
+    $('#step1form').fadeOut('slow', function () {
+      $('#step1spinnercontainer').fadeIn('slow');
+    });
 
     backend.getTimeslots(credentials)
       .success(function (data, status, xhr) {
-        alert('done');
-        console.log(data);
+        $('#step1').fadeOut('slow', function () {
+          $('#step2').fadeIn('slow');
+        });
       })
       .error (function (xhr, status, error) {
-        alert('error');
-        console.log(xhr);
-        console.log(status);
-        console.log(error);
+        $('#step1header').text('Uh...');
+        $('#step1text').text("The credentials you gave me didn't work.. You know your own password, right?");
+        $('#step1spinnercontainer').fadeOut('slow', function () {
+          $('#step1form').fadeIn('slow');
+        });
       });
   }
 }

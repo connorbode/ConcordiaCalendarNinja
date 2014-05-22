@@ -5,6 +5,7 @@
     <link href='styles/main.css' rel='stylesheet' type='text/css'>
     <script src='bower_components/jquery/dist/jquery.min.js'></script>
     <script src='bower_components/bootstrap/dist/js/bootstrap.min.js'></script>
+    <script src='bower_components/spinjs/spin.js'></script>
   </head>
   <body>
     <div class="container">
@@ -28,24 +29,34 @@
 
         <!-- step 1 -->
         <div id="step1">
-          <h1>First, let's grab your schedule</h1>
-          <p>Enter your MyConcordia login details below.</p>
-          <p>
-          Username: <input type="text" id="username" class="form-control"/> <br />
-          Password: <input type="password" id="password" class="form-control" /> <br />
-          <center>
-            <p><a class="btn btn-primary btn-lg" id="get-schedule-btn">Steal Schedule</a></p>
+          <h1 id="step1header">First, let's grab your schedule</h1>
+          <div id="step1form">
+            <p id="step1text">Enter your MyConcordia login details below.</p>
             <p>
-              <a
-                id="is-this-safe-btn" 
-                data-container="body"
-                data-toggle="tooltip" 
-                data-placement="bottom" 
-                data-content="Fill this out">
-                Is this safe??
-              </a>
-            </p>
-          </center>
+            Username: <input type="text" id="username" class="form-control"/> <br />
+            Password: <input type="password" id="password" class="form-control" /> <br />
+            <center>
+              <p><a class="btn btn-primary btn-lg" id="get-schedule-btn">Steal Schedule</a></p>
+              <p>
+                <a
+                  id="is-this-safe-btn" 
+                  data-container="body"
+                  data-toggle="tooltip" 
+                  data-placement="bottom" 
+                  data-content="Fill this out">
+                  Is this safe??
+                </a>
+              </p>
+            </center>
+          </div>
+          <div id="step1spinnercontainer">
+            <div id="step1spinner"></div>
+          </div>
+        </div>
+
+        <!-- step2 -->
+        <div id="step2">
+          <h1>Here's what we found..</h1>
         </div>
 
 

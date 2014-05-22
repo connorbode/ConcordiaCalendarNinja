@@ -1,3 +1,11 @@
 .page-header {
   font-family: 'Open Sans', sans-serif
 }
+
+#step1spinnercontainer {
+  height: 200px;
+}
+
+#step1spinner {
+  margin-top: 40px;
+}
