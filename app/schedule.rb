@@ -6,15 +6,17 @@ require 'nokogiri'
 
 class Schedule
 
-  attr_reader :username, :password, :term, :recurrenceRule
+  attr_reader :username, :password, :recurrenceRule
   attr_accessor :html
 
+  @@TERMS = ['Summer', 'Fall', 'Winter']
+  @@timeout = 5
 
-  def initialize(username, password, term)
-    @username, @password, @term = username, password, term
+  def initialize(username, password)
+    @username, @password = username, password
     @year = Time.now.year
     @recurrenceRule = getRecurrenceRule
-    @@timeout = 5
+    @html = {}
   end
 
   def timeout
@@ -52,11 +54,13 @@ class Schedule
 
       # navigate to timetable
       page = links[0].click
-      page = page.frame_with(name: "TargetContent").click
-      page = agent.page.link_with(text: term).click
-      page = page.frame_with(name: "TargetContent").click
+      home_page = page.frame_with(name: "TargetContent").click
 
-      @html = page.body
+      @@TERMS.each do |term|
+        page = home_page.link_with(text: term).click
+        page = page.frame_with(name: "TargetContent").click
+        @html[term] = page.body
+      end
 
     # catch timeout errors
     rescue Net::HTTP::Persistent::Error
@@ -65,37 +69,46 @@ class Schedule
   end
 
   def response
-    # use Nokogiri to parse HTML
-    h = Nokogiri::HTML(html)
-    
     timeslots = []
-    h.css("tr").each do |row|
-      day = 0
-      row.css("td").each do |col|
-        if col.attr('class') == "cusistablecontent"
-          colText = col.text
-          startTime = colText.slice!(/Start Time:\d{2}:\d{2}/).split(//).last(5).join
-          endTime = colText.slice!(/End Time:\d{2}:\d{2}/).split(//).last(5).join
-          course = colText[2..9]
-          details = colText[16..-2]
-          timeslots << {
-              :day => day,
-              :startTime => getTime(startTime, day),
-              :endTime => getTime(endTime, day),
-              :recurrenceRule => @recurrenceRule,
-              :course => course,
-              :details => details
-            }
+
+    @@TERMS.each do |term|
+      page = @html[term]
+      # use Nokogiri to parse HTML
+      h = Nokogiri::HTML(page)
+      
+      h.css("tr").each do |row|
+        day = 0
+        row.css("td").each do |col|
+          if col.attr('class') == "cusistablecontent"
+            colText = col.text
+            startTime = colText.slice!(/Start Time:\d{2}:\d{2}/).split(//).last(5).join
+            endTime = colText.slice!(/End Time:\d{2}:\d{2}/).split(//).last(5).join
+            course = colText[2..9]
+            details = colText[16..-2]
+            timeslots << {
+                :day => day,
+                :startTime => getTime(startTime, day, term),
+                :endTime => getTime(endTime, day, term),
+                :recurrenceRule => @recurrenceRule,
+                :course => course,
+                :details => details
+              }
+          end
+          day += 1
         end
-        day += 1
       end
     end
     timeslots
   end
 
-  def getTime time, day
-    if @term == "Winter"
+  def getTime time, day, term
+    case term
+    when "Winter"
       start_day = Date.new(@year, 1, 1)
+    when "Fall"
+      start_day = Date.new(@year, 9, 1)
+    when "Summer"
+      start_day = Date.new(@year, 6, 1)
     end
 
     while day != start_day.wday

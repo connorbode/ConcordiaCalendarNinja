@@ -2,7 +2,7 @@ require 'thin'
 require 'sinatra'
 require 'json'
 
-require File.join(File.dirname(__FILE__), '..', 'lib', 'schedule.rb')
+require File.join(File.dirname(__FILE__), 'schedule.rb')
 
 set :bind, "0.0.0.0"
 set :server, 'thin'
@@ -10,7 +10,7 @@ set :server, 'thin'
 class InvalidRequest < StandardError
 end
 
-get '/ninja/:username/:password/:term' do
+get '/ninja/:username/:password' do
   ninja
 end
 
@@ -25,7 +25,7 @@ end
 def ninja
   content_type :json
 
-  schedule = Schedule.new params[:username], params[:password], params[:term]
+  schedule = Schedule.new params[:username], params[:password]
 
   h = schedule.fetch
   schedule.response.to_json
