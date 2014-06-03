@@ -14,7 +14,6 @@ class Schedule
 
   def initialize(username, password)
     @username, @password = username, password
-    @year = Time.now.year
     @recurrenceRule = getRecurrenceRule
     @html = {}
   end
@@ -72,40 +71,50 @@ class Schedule
       page = @html[term]
       # use Nokogiri to parse HTML
       h = Nokogiri::HTML(page)
-      
-      h.css("tr").each do |row|
-        day = 0
-        row.css("td").each do |col|
-          if col.attr('class') == "cusistablecontent"
-            colText = col.text
-            startTime = colText.slice!(/Start Time:\d{2}:\d{2}/).split(//).last(5).join
-            endTime = colText.slice!(/End Time:\d{2}:\d{2}/).split(//).last(5).join
-            course = colText[2..9]
-            details = colText[16..-2]
-            timeslots << {
-                :day => day,
-                :startTime => getTime(startTime, day, term),
-                :endTime => getTime(endTime, day, term),
-                :recurrenceRule => @recurrenceRule,
-                :course => course,
-                :details => details
-              }
+
+      # get year
+      year = nil
+      h.css("p.cusisheaderdata").each do |result|
+
+        # if we find the year, then the schedule has some content
+        if result.text[0, term.length] == term
+          year = result.text[-4,4].to_i 
+          puts "#{term} #{year}"
+          h.css("tr").each do |row|
+            day = 0
+            row.css("td").each do |col|
+              if col.attr('class') == "cusistablecontent"
+                colText = col.text
+                startTime = colText.slice!(/Start Time:\d{2}:\d{2}/).split(//).last(5).join
+                endTime = colText.slice!(/End Time:\d{2}:\d{2}/).split(//).last(5).join
+                course = colText[2..9]
+                details = colText[16..-2]
+                timeslots << {
+                    :day => day,
+                    :startTime => getTime(startTime, day, term, year),
+                    :endTime => getTime(endTime, day, term, year),
+                    :recurrenceRule => @recurrenceRule,
+                    :course => course,
+                    :details => details
+                  }
+              end
+              day += 1
+            end
           end
-          day += 1
         end
       end
     end
     timeslots
   end
 
-  def getTime time, day, term
+  def getTime time, day, term, year
     case term
     when "Winter"
-      start_day = Date.new(@year, 1, 1)
+      start_day = Date.new(year, 1, 1)
     when "Fall"
-      start_day = Date.new(@year, 9, 1)
+      start_day = Date.new(year, 9, 1)
     when "Summer"
-      start_day = Date.new(@year, 6, 1)
+      start_day = Date.new(year, 6, 1)
     end
 
     while day != start_day.wday
