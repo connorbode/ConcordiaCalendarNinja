@@ -34,7 +34,7 @@ class Schedule
 
       # base page is http, but there is an instant redirect to https, which
       # mechanize follows.  fails for some reason when set to https initially.
-      page = agent.get "http://myconcordia.ca/"
+      page = agent.get "https://my.concordia.ca/psp/upprpr9/?cmd=login&languageCd=ENG"
 
       # log user in
       form = page.form 'login'
@@ -42,23 +42,20 @@ class Schedule
       form.pwd = password
       page = agent.submit(form, form.buttons.first)
 
+      # not sure why this page works, but it does.
+      home_page = agent.get "https://my.concordia.ca/psp/upprpr9/EMPLOYEE/EMPL/s/WEBLIB_CONCORD.CU_SIS_INFO.FieldFormula.IScript_Fall?PORTALPARAM_PTCNAV=CU_MY_CLASS_SCHEDULE_FALL&EOPP.SCNode=EMPL&EOPP.SCPortal=EMPLOYEE&EOPP.SCName=CU_ACADEMIC&EOPP.SCLabel=Academic&EOPP.SCPTfname=CU_ACADEMIC&FolderPath=PORTAL_ROOT_OBJECT.CU_ACADEMIC.CU_MY_CLASS_SHEDULE.CU_MY_CLASS_SCHEDULE_FALL&IsFolder=false"
+
       # get status code
-      code = page.code.to_i
+      code = home_page.code.to_i
       raise InvalidRequest, "failed to contact MyConcordia" if code != 200
 
-      # if the user logged in, then we can see the academic link
-      links = page.links_with(:text => 'Academic')
-
       # log in failed
+      links = home_page.links_with(text: "Academic")
       raise InvalidRequest, "invalid MyConcordia credentials" if links.length < 1
-
-      # navigate to timetable
-      page = links[0].click
-      home_page = page.frame_with(name: "TargetContent").click
 
       @@TERMS.each do |term|
         page = home_page.link_with(text: term).click
-        page = page.frame_with(name: "TargetContent").click
+        page = page.iframe_with(name: "TargetContent").click
         @html[term] = page.body
       end
 
