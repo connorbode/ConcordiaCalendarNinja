@@ -79,7 +79,6 @@ class Schedule
         # if we find the year, then the schedule has some content
         if result.text[0, term.length] == term
           year = result.text[-4,4].to_i 
-          puts "#{term} #{year}"
           h.css("tr").each do |row|
             day = 0
             row.css("td").each do |col|
@@ -95,7 +94,9 @@ class Schedule
                     :endTime => getTime(endTime, day, term, year),
                     :recurrenceRule => @recurrenceRule,
                     :course => course,
-                    :details => details
+                    :details => details,
+                    :term => term,
+                    :year => year
                   }
               end
               day += 1

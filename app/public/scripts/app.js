@@ -57,6 +57,10 @@ var app = {
 
     backend.getTimeslots(credentials)
       .success(function (data, status, xhr) {
+        var form = $('#step2Accordion');
+        $.each(data, function (index, timeslot) {
+          form.append(generateAccordion(timeslot, index));
+        });
         $('#step1').fadeOut('slow', function () {
           $('#step2').fadeIn('slow');
         });
@@ -102,6 +106,34 @@ $('#start').on('click', function() {
 
 	backend.getTimeslots(timeslotParams);
 });
+
+
+
+
+
+// helpers ================================
+function generateAccordion (timeslot, index) {
+  var parent = "step2Accordion";
+  var collapse = "step2AccordionCollapse" + index;
+  var elem = '';
+  elem += '<div class="panel panel-default">';
+  elem += '<div class="panel-heading">';
+  elem += '<h4 class="panel-title">';
+  elem += '<input type="checkbox"> &nbsp; ';
+  elem += '<a data-toggle="collapse" data-parent="#' + parent + '" href="#' + collapse + '">';
+  elem += timeslot.term + " " + timeslot.year + " - " + timeslot.course;
+  elem += '</a>';
+  elem += '</h4>';
+  elem += '</div>';
+  elem += '<div id="' + collapse + '" class="panel-collapse collapse">';
+  elem += '<div class="panel-body">';
+  elem += 'Title: <input class="form-control" type="text" value="' + timeslot.course + ' ' + timeslot.details + '">';
+  elem += 'Location: <input class="form-control" type="text" value="">';
+  elem += '</div>';
+  elem += '</div>';
+
+  return elem;
+}
 
 
 
