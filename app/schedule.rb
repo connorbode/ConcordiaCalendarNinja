@@ -9,7 +9,8 @@ class Schedule
   attr_reader :username, :password, :recurrenceRule
   attr_accessor :html
 
-  @@TERMS = ['Summer', 'Fall', 'Winter']
+  # TODO : Include summer term
+  @@TERMS = ['Fall', 'Winter']
   @@timeout = 5
 
   def initialize(username, password)
@@ -114,8 +115,9 @@ class Schedule
       start_day = Date.new(year, 1, 1)
     when "Fall"
       start_day = Date.new(year, 9, 1)
-    when "Summer"
-      start_day = Date.new(year, 6, 1)
+    # Need to figure out specifics for summer.
+    # when "Summer"
+    #   start_day = Date.new(year, 6, 1)
     end
 
     while day != start_day.wday
