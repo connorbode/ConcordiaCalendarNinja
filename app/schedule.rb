@@ -15,7 +15,6 @@ class Schedule
 
   def initialize(username, password)
     @username, @password = username, password
-    @recurrenceRule = getRecurrenceRule
     @html = {}
   end
 
@@ -93,7 +92,7 @@ class Schedule
                     :day => day,
                     :startTime => getTime(startTime, day, term, year),
                     :endTime => getTime(endTime, day, term, year),
-                    :recurrenceRule => @recurrenceRule,
+                    :recurrenceRule => getRecurrenceRule(term, year),
                     :course => course,
                     :details => details,
                     :term => term,
@@ -127,10 +126,14 @@ class Schedule
     start_day.to_time.strftime("%Y-%m-%d") + "T#{time}:00-05:00"
   end
 
-  def getRecurrenceRule
+  def getRecurrenceRule term, year
 
-    # fix this
-    end_date = Date.new(2014, 4, 15)
+    case term
+    when "Winter"
+      end_date = Date.new(year, 4, 30)
+    when "Fall"
+      end_date = Date.new(year, 12, 25)
+    end
     
     "RRULE:FREQ=WEEKLY;UNTIL=" + end_date.to_time.strftime("%Y-%m-%d")
   end
