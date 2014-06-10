@@ -2,7 +2,6 @@ require_relative '../app/schedule.rb'
 require 'rspec'
 
 describe 'schedule.rb' do
-
   describe 'getTime' do
     it 'returns the correct time' do
       s = Schedule.new "test", "test"
@@ -13,4 +12,11 @@ describe 'schedule.rb' do
     end
   end
 
+  describe 'getRecurrenceRule' do
+    it 'returns the appropriate recurrence rule' do 
+      s = Schedule.new "test", "test"
+      expect(s.getRecurrenceRule "Fall", 2014).to eq "RRULE:FREQ=WEEKLY;UNTIL=2014-12-25"
+      expect(s.getRecurrenceRule "Winter", 2099).to eq "RRULE:FREQ=WEEKLY;UNTIL=2099-04-30"
+    end
+  end
 end 
