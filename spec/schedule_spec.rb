@@ -19,4 +19,11 @@ describe 'schedule.rb' do
       expect(s.getRecurrenceRule "Winter", 2099).to eq "RRULE:FREQ=WEEKLY;UNTIL=2099-04-30"
     end
   end
+
+  describe 'timeout' do
+    it 'returns the timeout' do
+      s = Schedule.new "test", "test"
+      expect(s.timeout.class).to eq Fixnum
+    end
+  end
 end 
