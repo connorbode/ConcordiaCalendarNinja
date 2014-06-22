@@ -3,12 +3,10 @@ require 'sinatra'
 require 'json'
 
 require File.join(File.dirname(__FILE__), 'schedule.rb')
+require File.join(File.dirname(__FILE__), 'error.rb')
 
 set :bind, "0.0.0.0"
 set :server, 'thin'
-
-class InvalidRequest < StandardError
-end
 
 get '/ninja/:username/:password' do
   ninja
