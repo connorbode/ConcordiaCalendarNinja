@@ -1,5 +1,7 @@
 require_relative '../app/schedule.rb'
+require_relative '../app/error.rb'
 require 'rspec'
+require 'fakeweb'
 
 describe 'schedule.rb' do
   describe 'getTime' do
@@ -24,6 +26,26 @@ describe 'schedule.rb' do
     it 'returns the timeout' do
       s = Schedule.new "test", "test"
       expect(s.timeout.class).to eq Fixnum
+    end
+  end
+
+  describe 'fetch' do
+    it 'throws error on login failure' do
+      login = File.read('./spec/fixtures/login.html')
+      FakeWeb.register_uri(:get, 
+        "https://my.concordia.ca/psp/upprpr9/?cmd=login&languageCd=ENG", 
+        :body => login, 
+        :content_type => "text/html")
+      FakeWeb.register_uri(:post, 
+        "https://my.concordia.ca/psp/upprpr9/?cmd=login&languageCd=ENG", 
+        :body => login,
+        :content_type => "text/html")
+      FakeWeb.register_uri(:get, 
+        "https://my.concordia.ca/psp/upprpr9/EMPLOYEE/EMPL/s/WEBLIB_CONCORD.CU_SIS_INFO.FieldFormula.IScript_Fall?PORTALPARAM_PTCNAV=CU_MY_CLASS_SCHEDULE_FALL&EOPP.SCNode=EMPL&EOPP.SCPortal=EMPLOYEE&EOPP.SCName=CU_ACADEMIC&EOPP.SCLabel=Academic&EOPP.SCPTfname=CU_ACADEMIC&FolderPath=PORTAL_ROOT_OBJECT.CU_ACADEMIC.CU_MY_CLASS_SHEDULE.CU_MY_CLASS_SCHEDULE_FALL&IsFolder=false", 
+        :body => login,
+        :content_type => "text/html")
+      s = Schedule.new "test", "test"
+      expect{s.fetch}.to raise_error(InvalidRequest)
     end
   end
 end 
