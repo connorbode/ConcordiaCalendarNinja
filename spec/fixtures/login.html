@@ -1,0 +1,225 @@
+<!doctype html><html><head><meta charset="UTF-8" /><title>MyConcordia - Concordia University</title><meta name="Description" content="A gateway to internal systems at Concordia University in Montreal. Current students access class &amp; exam schedules, course registration, records, transcripts... Employees can change address, find pay stubs..."><meta name="Keywords" content="my concordia university montreal student faculty staff portal online community news events class schedule course registration online fee payment exam schedules student records transcripts book lists computer account self-service library services employees benefits pay stubs"><style id="ptfb" type="text/css">body{display:none;}</style><script type="text/javascript">
+if (self === top) {
+    var fb = document.getElementById("ptfb");
+    fb.parentNode.removeChild(fb);
+} else {
+    try { 
+        top.location = self.location;
+    } catch(ex) {}
+}
+</script><link rel="stylesheet" href="/upprpr9/styles.css" rel="stylesheet" type="text/css"><link rel="stylesheet" href="/upprpr9/cu_signin_files/font-faces.css" /><link rel="stylesheet" href="/upprpr9/cu_signin_files/style.css" />
+<!--link rel="stylesheet" href="/upprpr9/cu_signin_files/?v=1" /-->
+<link rel="stylesheet" href="/upprpr9/cu_signin_files/login.css" />
+<!--[if lte IE 8]>
+<link rel="stylesheet" type="text/css" media="screen" href="/upprpr9/cu_signin_files/ie_lt_8.css">
+    <![endif]-->
+</head>
+<script LANGUAGE="JavaScript">
+function signin(form)
+    {
+    var docLoc=new String(document.location);
+    var iLast= docLoc.lastIndexOf("?&");
+    if (docLoc.length == (iLast+2))
+        {
+        docLoc = docLoc.substring(0, iLast);
+        }
+
+    if (docLoc.indexOf("?cmd=")==-1 && docLoc.indexOf("?")!=-1)
+        {
+        if (docLoc.indexOf("&cmd=login")==-1)
+            {
+            var i=docLoc.length - 1;
+            var j= docLoc.lastIndexOf("&");
+            if (j!=-1 && i==j)
+                form.action=docLoc+form.action.substring(form.action.indexOf("?")+1,form.action.length);
+            else
+                form.action=docLoc+"&"+form.action.substring(form.action.indexOf("?")+1,form.action.length);
+            }
+        else
+            form.action=docLoc.substring(0,docLoc.indexOf("&cmd=login"))+"&cmd=login"+docLoc.substring(docLoc.indexOf("&languageCd="),docLoc.length);
+        }
+
+    var now=new Date();
+    form.timezoneOffset.value=now.getTimezoneOffset();
+    return ;
+    }
+
+function setFocus()
+    {
+    try
+        {document.login.userid.focus()}
+    catch (e)
+        {};
+    return;
+    }
+
+function setErrorImg()
+    {
+    var login_error = document.getElementById('login_error').innerHTML;
+    var discovery_error = document.getElementById('discovery_error').innerHTML;
+    var browsercheck_error = document.getElementById('browsercheck_error').innerHTML;
+    
+    if (login_error.length != 0 || discovery_error.length != 0 || browsercheck_error.length != 0)
+        {
+        document.getElementById('error_img').style.display = 'block';
+        if (login_error.length != 0)
+            document.getElementById('login_error').style.visibility = 'visible';
+        if (discovery_error.length != 0)
+            document.getElementById('discovery_error').style.visibility = 'visible';
+        document.getElementById('error_link').focus();
+        }
+    else
+        setFocus();
+    }
+
+function clearRecentSearch() {
+    if (typeof(window.sessionStorage) !== "undefined") {
+        try {
+            sessionStorage.clear();
+        } catch (e) {}
+    }
+}
+
+function submitAction(form)
+{
+signin(form);
+form.Submit.disabled=true;
+form.submit();
+}
+</script>
+<!--
+Concordia script start...
+-->
+<script language="JavaScript">
+function CU_Override_BrowserCheck()
+{
+  if (navigator.userAgent.match(/Trident\/7\./) && !(/operating system/.test(document.getElementById("browsercheck_error").innerHTML))) {
+    document.getElementById("error_img").innerHTML="";
+    document.getElementById("cu_override").innerHTML="";
+  }
+}
+</script>
+<!--
+Concordia script end...
+-->
+<body onLoad="setErrorImg(); clearRecentSearch(); CU_Override_BrowserCheck();">
+    <div class="container">
+        <div id="toolbar" class="clearfix">
+            <div class="lhs">&nbsp;</div>
+            <div id="tools" class="rhs">
+                <a href="http://www.concordia.ca/">Concordia University</a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        
+                <a href="http://www.concordia.ca/maps.html">Maps</a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        
+                <a href="http://www.concordia.ca/maps/shuttle-bus.html">Shuttle</a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        
+                <a href="http://www.concordia.ca/web/a-z.html">A-Z index</a>
+            </div>
+        </div>
+        <div id="head">
+            <a href="https://www.myconcordia.ca" title="Go to the MyConcordia home page">
+                <h1 class="header_title">
+                    <span>MyConcordia</span>
+                </h1>
+            </a>
+        </div>
+        <div class="content">
+            <p>
+                <img class="arrow" src="/upprpr9/cu_signin_files/images/icons/arrow.png" />
+                <a href="http://fcms.concordia.ca/fcms/asc002_stud_all.aspx" class="highlight">Class schedules</a> &nbsp;|&nbsp; 
+                <a href="https://psis.concordia.ca/personalschedule/login.asp" class="highlight">Your class schedule</a> &nbsp;|&nbsp; 
+                <a href="http://www.concordia.ca/events/cancelled-classes.html" class="highlight">Cancelled classes</a>
+                <!-- &nbsp;|&nbsp; <a href="http://www.concordia.ca/web/new-site-guide.html">New Concordia.ca site guide</a> &nbsp;|&nbsp; <a href="http://www.concordia.ca/students.html">Current student section</a> &nbsp;|&nbsp; <a href="https://cspace.concordia.ca/">Cspace</a> -->
+            </p>
+            <div class="col-a">
+                <p>
+                    <strong>Welcome to the upgraded version of the MyConcordia portal!</strong>
+                </p>
+                <p>The MyConcordia portal provides personalized and confidential information to students, faculty and staff.</p>
+                <form id="login" action="?cmd=login&languageCd=ENG" method="post" name="login" onsubmit="return signin(document.login)">
+                    <input type="hidden" name="resource" value="&#x2f;content&#x2f;cspace&#x2f;en&#x2f;login.html">
+                        <input type="hidden" name="_charset_" value="UTF-8"/>
+                        <table class="login-form">
+                            <tr>
+                                <div style="text-align:center">
+                                    <h1 id="error_img" style="display:none">
+                                        <a id ="error_link" href="javascript:setFocus();" tabindex="1">
+                                            <img src="/upprpr9/images/PT_LOGIN_ERROR.gif" alt="Error" border="0"/>
+                                        </a>
+                                    </h1>
+                                    <h2 class="psloginerror" id="login_error" style="visibility:hidden"></h2>
+                                    <h2 class="psloginerror" id="discovery_error" style="visibility:hidden"></h2>
+                                </div>
+                                <div id="cu_override">
+                                    <div class="psloginerror" id="browsercheck_error" style="text-align:left">We've detected that your browser version is not supported by this website.You can continue to try and use it, however, many of the newer features depend on certified minimum releases of various browsers. For best results, use one of the following browsers:</div>
+                                    <a href='http://www.apple.com/safari/download/' target='_blank'>
+                                        <img src='/upprpr9/images/PTBROWSER_SF.gif' border='0' alt='SAFARI'
+                                        </a>
+                                        <a href='http://www.apple.com/safari/download/' target='_blank'>Safari</a>
+                                        <span class='PAPAGETITLE'> (Version 5.0 and above)</span>
+                                        <br>
+                                            <a href='http://www.mozilla.com/' target='_blank'>
+                                                <img src='/upprpr9/images/PTBROWSER_FF.gif' border='0' alt='FIREFOX'
+                                                </a>
+                                                <a href='http://www.mozilla.com/' target='_blank'>Mozilla Firefox</a>
+                                                <span class='PAPAGETITLE'> (Version 17.0 and above)</span>
+                                                <br>
+                                                    <br>
+                                                    </div>
+                                                </div>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label for="userid">Netname</label>
+                                                </td>
+                                                <td>
+                                                    <input type="text" id="userid" class="form_field form_field_text form_login_username" name="userid" value="" autofocus tabindex="1" maxlength="10" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label for="pwd">Password</label>
+                                                </td>
+                                                <td>
+                                                    <input type="password" class="form_field form_field_text form_login_password" id="pwd" name="pwd" value="" tabindex="2" maxlength="16" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>
+                                                    <input class="form_button_submit" type="submit" value="Log in" onclick="submitAction(document.login)">
+                                                        <div class="info-text">
+                                                            <a href="https://fcms.concordia.ca/netname/net01.asp">Activate Netname</a> &nbsp;|&nbsp; 
+                                                            <a href="http://genesis.concordia.ca/passwordreset/forgot.ashx">Forgot password?</a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </form>
+                                    </div>
+                                    <div class="col-b">
+                                        <!--p>Please take this <a href="https://survey.concordia.ca/limesurvey/index.php/381675/lang-en" class="highlight" target="_blank">quick survey</a> to let us know what you think!</p-->
+                                        <p>Additional spaces for students, faculty and staff
+        
+                                            <ul>
+                                                <li>The new section on Concordia.ca for 
+                                                    <a href="http://www.concordia.ca/students.html">current students</a>
+                                                </li>
+                                                <li>
+                                                    <a href="https://cspace.concordia.ca/">Cspace</a>, the university’s intranet for faculty and staff.
+                                                </li>
+                                            </ul>
+                                            <br />
+                                            <p>Questions? Issues?
+                                                <br />Contact the IITS Service Desk at 514-848-2424, ext. 7613, or email 
+                                                <a href="mailto:help@concordia.ca">help@concordia.ca</a>.
+                                            </p>
+                                        </div>
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+                            </body>
+                        </html>
