@@ -9,9 +9,10 @@ class Schedule
   attr_reader :username, :password, :recurrenceRule
   attr_accessor :html
 
-  # TODO : Include summer term
-  @@TERMS = ['Fall', 'Winter']
-  @@timeout = 5
+  @@TERMS           = ['Fall', 'Winter']
+  @@timeout         = 5
+  @@login_page_url  = "https://my.concordia.ca/psp/upprpr9/?cmd=login&languageCd=ENG"
+  @@main_page_url   = "https://my.concordia.ca/psp/upprpr9/EMPLOYEE/EMPL/s/WEBLIB_CONCORD.CU_SIS_INFO.FieldFormula.IScript_Fall?PORTALPARAM_PTCNAV=CU_MY_CLASS_SCHEDULE_FALL&EOPP.SCNode=EMPL&EOPP.SCPortal=EMPLOYEE&EOPP.SCName=CU_ACADEMIC&EOPP.SCLabel=Academic&EOPP.SCPTfname=CU_ACADEMIC&FolderPath=PORTAL_ROOT_OBJECT.CU_ACADEMIC.CU_MY_CLASS_SHEDULE.CU_MY_CLASS_SCHEDULE_FALL&IsFolder=false"
 
   def initialize(username, password)
     @username, @password = username, password
@@ -24,27 +25,16 @@ class Schedule
 
   def fetch
     begin
-
-      # use mechanize to navigate through MyConcordia
       agent = Mechanize.new
-
-      # set the agent to timeout after 5 seconds
       agent.read_timeout = @@timeout
+      page = agent.get @@login_page_url
 
-      # base page is http, but there is an instant redirect to https, which
-      # mechanize follows.  fails for some reason when set to https initially.
-      page = agent.get "https://my.concordia.ca/psp/upprpr9/?cmd=login&languageCd=ENG"
-
-      # log user in
       form = page.form 'login'
       form.userid = username
       form.pwd = password
       page = agent.submit(form, form.buttons.first)
 
-      # not sure why this page works, but it does.
-      home_page = agent.get "https://my.concordia.ca/psp/upprpr9/EMPLOYEE/EMPL/s/WEBLIB_CONCORD.CU_SIS_INFO.FieldFormula.IScript_Fall?PORTALPARAM_PTCNAV=CU_MY_CLASS_SCHEDULE_FALL&EOPP.SCNode=EMPL&EOPP.SCPortal=EMPLOYEE&EOPP.SCName=CU_ACADEMIC&EOPP.SCLabel=Academic&EOPP.SCPTfname=CU_ACADEMIC&FolderPath=PORTAL_ROOT_OBJECT.CU_ACADEMIC.CU_MY_CLASS_SHEDULE.CU_MY_CLASS_SCHEDULE_FALL&IsFolder=false"
-
-      # log in failed
+      home_page = agent.get @@main_page_url
       links = home_page.links_with(text: "Academic")
       raise InvalidRequest, "invalid MyConcordia credentials" if links.length < 1
 
@@ -54,7 +44,6 @@ class Schedule
         @html[term] = page.body
       end
 
-    # catch timeout errors
     rescue Net::HTTP::Persistent::Error
       raise InvalidRequest, "failed to contact MyConcordia"
     end
