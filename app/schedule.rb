@@ -44,10 +44,6 @@ class Schedule
       # not sure why this page works, but it does.
       home_page = agent.get "https://my.concordia.ca/psp/upprpr9/EMPLOYEE/EMPL/s/WEBLIB_CONCORD.CU_SIS_INFO.FieldFormula.IScript_Fall?PORTALPARAM_PTCNAV=CU_MY_CLASS_SCHEDULE_FALL&EOPP.SCNode=EMPL&EOPP.SCPortal=EMPLOYEE&EOPP.SCName=CU_ACADEMIC&EOPP.SCLabel=Academic&EOPP.SCPTfname=CU_ACADEMIC&FolderPath=PORTAL_ROOT_OBJECT.CU_ACADEMIC.CU_MY_CLASS_SHEDULE.CU_MY_CLASS_SCHEDULE_FALL&IsFolder=false"
 
-      # get status code
-      code = home_page.code.to_i
-      raise InvalidRequest, "failed to contact MyConcordia" if code != 200
-
       # log in failed
       links = home_page.links_with(text: "Academic")
       raise InvalidRequest, "invalid MyConcordia credentials" if links.length < 1
