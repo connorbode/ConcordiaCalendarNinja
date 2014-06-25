@@ -1,4 +1,5 @@
 require 'simplecov'
+require 'rack/test'
 SimpleCov.start do
   add_filter "/spec/"
 end
@@ -20,6 +21,8 @@ end
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
+
+  config.include Rack::Test::Methods
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin
