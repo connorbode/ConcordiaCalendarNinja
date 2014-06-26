@@ -15,6 +15,12 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+
+      // dependencies
+      'app/public/bower_components/jquery/dist/jquery.min.js',
+      'app/public/bower_components/spinjs/spin.js',
+
+      // app
       'spec/**/*_spec.js',
       'app/public/scripts/**/*.js'
     ],
