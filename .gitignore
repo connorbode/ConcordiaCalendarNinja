@@ -16,3 +16,6 @@
 
 # ignore generated coverage
 /coverage
+
+# ignore node modules
+/node_modules

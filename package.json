@@ -1,0 +1,24 @@
+{
+  "name": "ConcordiaCalendarNinja",
+  "version": "0.0.1",
+  "description": "Steals your Concordia schedule. Puts it on Google Calendar",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/connorbode/ConcordiaCalendarNinja.git"
+  },
+  "author": "Connor Bode",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/connorbode/ConcordiaCalendarNinja/issues"
+  },
+  "homepage": "https://github.com/connorbode/ConcordiaCalendarNinja",
+  "devDependencies": {
+    "karma": "^0.12.16",
+    "karma-chrome-launcher": "^0.1.4",
+    "karma-jasmine": "^0.2.2"
+  }
+}
