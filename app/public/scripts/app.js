@@ -72,6 +72,11 @@ var app = {
           $('#step1form').fadeIn('slow');
         });
       });
+  },
+
+  // auth with google
+  auth: function () {
+    auth.auth();
   }
 }
 
@@ -80,14 +85,19 @@ $(function () {
   app.init();
 });
 
-// step 0
+// proceed from step 0
 $('#get-started-btn').on('click', function () {
   app.start();
 });
 
-// step 1 
+// proceed from step 1 
 $('#get-schedule-btn').on('click', function () {
   app.startSteal();
+});
+
+// proceed from step 2
+$('#import-btn').on('click', function () {
+  app.auth();
 });
 
 
@@ -132,10 +142,10 @@ function generateAccordion (timeslot, index) {
 }
 
 
-
-
-// auth.auth();
-
+function handleGoogleAuth(response) {
+  console.log(response['access_token']);
+  console.log(response['token_type']);
+}
 // function handleGoogleAuth(response) {
     
 //     // configure calendar

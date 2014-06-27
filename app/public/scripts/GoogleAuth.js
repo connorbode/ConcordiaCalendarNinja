@@ -9,7 +9,7 @@ var GoogleAuth = function() {
         validUrl = 'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=';
         scope = 'https://www.googleapis.com/auth/calendar';
         clientid = '375598335107-4uro6idndhosr9k1qas7v6f9fuhfpcsq.apps.googleusercontent.com';
-        redirect = 'http://sleepypandashoes.kd.io/Projects/calendarNinja/app/auth.html';
+        redirect = 'https://concordia-calendar-ninja.herokuapp.com/auth.html';
         type = 'token';
         url = oauthUrl + 'scope=' + scope + '&client_id=' + clientid + '&redirect_uri=' + redirect + '&response_type=' + type;
         window.open(url, 'auth', 'height=400,width=400');
