@@ -127,8 +127,19 @@ function generateAccordion (timeslot, index) {
   elem += '</div>';
   elem += '<div id="' + collapse + '" class="panel-collapse collapse">';
   elem += '<div class="panel-body">';
-  elem += 'Title: <input class="form-control" type="text" value="' + timeslot.course + ' ' + timeslot.details + '">';
-  elem += 'Location: <input class="form-control" type="text" value="">';
+
+  elem += '<div class="form-group">';
+  elem += '<label class="col-sm-3 control-label">Title</label>';
+  elem += '<div class="col-sm-8">';
+  elem += '<input class="form-control" type="text" value="' + timeslot.course + ' ' + timeslot.details + '">';
+  elem += '</div></div>';
+
+  elem += '<div class="form-group">';
+  elem += '<label class="col-sm-3 control-label">Location</label>';
+  elem += '<div class="col-sm-8">';
+  elem += '<input class="form-control" type="text" value="">';
+  elem += '</div></div>';
+
   elem += '</div>';
   elem += '</div>';
 
