@@ -80,32 +80,17 @@ $(function () {
   app.init();
 });
 
+// step 0
 $('#get-started-btn').on('click', function () {
   app.start();
 });
 
+// step 1 
 $('#get-schedule-btn').on('click', function () {
   app.startSteal();
 });
 
-$('#start').on('click', function() {
-	var username = $('#username').val();
-	var password = $('#password').val();
 
-  var timeslotParams = {
-    'username': username,
-    'password': password,
-    'term': "Winter",
-    'success': function(data, status, xhr) {
-      console.log(data);
-    },
-    'error': function(xhr, status, error) {
-      console.log(error);
-    }
-  }
-
-	backend.getTimeslots(timeslotParams);
-});
 
 
 
