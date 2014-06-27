@@ -1,6 +1,14 @@
 /*global module:false*/
 module.exports = function(grunt) {
 
+  // These plugins provide necessary tasks.
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-git-init-and-deploy');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-karma');
+
   // Project configuration.
   grunt.initConfig({
     // Task configuration.
@@ -46,15 +54,28 @@ module.exports = function(grunt) {
         configFile: 'karma.conf.js',
         singleRun: true
       }
+    },
+    copy: {
+      build: {
+        files: [
+          { expand: true, cwd: 'app/', src: ['**'], dest: 'build/' },
+          { expand: true, src: ['Gemfile', 'Gemfile.lock', 'Procfile'], dest: 'build/' }
+        ]
+      }
+    },
+    clean: ['build/'],
+    gitInitAndDeploy: {
+      deploy: {
+        options: {
+          repository: 'git@heroku.com:concordia-calendar-ninja.git',
+          message: 'deployment for v' + process.env.BUILD_NUMBER
+        },
+        src: 'build'
+      }
     }
   });
 
-  // These plugins provide necessary tasks.
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-karma');
-
   // Default task.
   grunt.registerTask('default', ['jshint']);
-
+  grunt.registerTask('deploy', ['copy:build', 'gitInitAndDeploy:deploy']);
 };

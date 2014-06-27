@@ -19,3 +19,6 @@
 
 # ignore node modules
 /node_modules
+
+# ignore build
+/build
