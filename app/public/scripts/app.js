@@ -39,13 +39,13 @@ angular.module('ninja.app', ['angularSpinner'])
               return 1;
             } else {
               if(x.term === 'Winter' && (y.term === 'Summer' || y.term === 'Fall')) {
-                return -1;
+                return 1;
               } else if (x.term === 'Summer' && y.term === 'Fall') {
-                return -1;
+                return 1;
               } else if (x.term === 'Summer' && y.term === 'Winter') {
-                return 1;
+                return -1;
               } else if (x.term === 'Fall' && (y.term === 'Summer' || y.term === 'Winter')) {
-                return 1;
+                return -1;
               } else {
                 if (x.course > y.course) {
                   return -1;
@@ -68,6 +68,10 @@ angular.module('ninja.app', ['angularSpinner'])
     $scope.day = function (day) {
       var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
       return days[day];
+    };
+
+    $scope.time = function (time) {
+      return moment(time).format('HH:mm');
     };
 
   });

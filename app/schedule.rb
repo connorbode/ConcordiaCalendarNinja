@@ -73,6 +73,23 @@ class Schedule
                 endTime = colText.slice!(/End Time:\d{2}:\d{2}/).split(//).last(5).join
                 course = colText[2..9]
                 details = colText[16..-2]
+                location = colText[16..-2]
+                if details.match(/Lec/)
+                  details = "Lecture"
+                elsif details.match(/Tut/)
+                  details = "Tutorial"
+                elsif details.match(/Lab/)
+                  details = "Lab"
+                end
+                if location.match(/SGW [A-Z]+-[0-9]+/)
+                  location = location.match(/SGW [A-Z]+-[0-9]+/)
+                elsif location.match(/SGW/)
+                  location = "SGW"
+                elsif location.match(/LOY/)
+                  location = location.match(/LOY [A-Z]+-[0-9]+/)
+                elsif location.match(/LOY/)
+                  location = "LOY"
+                end
                 timeslots << {
                     :day => day,
                     :startTime => getTime(startTime, day, term, year),
@@ -81,7 +98,8 @@ class Schedule
                     :course => course,
                     :details => details,
                     :term => term,
-                    :year => year
+                    :year => year,
+                    :location => location
                   }
               end
               day += 1

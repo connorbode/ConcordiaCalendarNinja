@@ -11,6 +11,7 @@
     <script src='bower_components/angular/angular.min.js'></script>
     <script src='bower_components/angular-spinner/angular-spinner.min.js'></script>
     <script src='bower_components/lodash/dist/lodash.min.js'></script>
+    <script src='bower_components/momentjs/min/moment.min.js'></script>
   </head>
   <body ng-app="ninja.app">
     <div class="container">
@@ -21,7 +22,7 @@
           <small>by Connor Bode</small>
         </h1>
       </div>
-      <div class="well well-lg col-sm-10 col-sm-offset-1" ng-init="step = 0" ng-controller="Ctrl">
+      <div class="well well-lg col-sm-12" ng-init="step = 0" ng-controller="Ctrl">
 
         <!-- Hi! -->
         <div id="step0" ng-show="step === 0">
@@ -82,8 +83,8 @@
                 <td>{{timeslot.details}}</td>
                 <td>{{timeslot.location}}</td>
                 <td>{{day(timeslot.day)}}</td>
-                <td>{{timeslot.start_time}}</td>
-                <td>{{timeslot.end_time}}</td>
+                <td>{{time(timeslot.startTime)}}</td>
+                <td>{{time(timeslot.endTime)}}</td>
               </tr>
             </table>
 
