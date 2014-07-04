@@ -1,13 +1,18 @@
 <html>
   <head>
-    <link rel='stylesheet' href='bower_components/bootstrap/dist/css/bootstrap.min.css' />
+    <link rel='stylesheet' href='bower_components/bootstrap/dist/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='bower_components/bootstrap-timepicker/css/bootstrap-timepicker.min.css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <link href='styles/main.css' rel='stylesheet' type='text/css'>
     <script src='bower_components/jquery/dist/jquery.min.js'></script>
     <script src='bower_components/bootstrap/dist/js/bootstrap.min.js'></script>
+    <script src='bower_components/bootstrap-timepicker/js/bootstrap-timepicker.min.js'></script>
     <script src='bower_components/spinjs/spin.js'></script>
+    <script src='bower_components/angular/angular.min.js'></script>
+    <script src='bower_components/angular-spinner/angular-spinner.min.js'></script>
+    <script src='bower_components/lodash/dist/lodash.min.js'></script>
   </head>
-  <body>
+  <body ng-app="ninja.app">
     <div class="container">
       <div class="page-header">
         <h1>
@@ -16,27 +21,27 @@
           <small>by Connor Bode</small>
         </h1>
       </div>
-      <div class="well well-lg col-sm-6 col-sm-offset-3">
+      <div class="well well-lg col-sm-10 col-sm-offset-1" ng-init="step = 0" ng-controller="Ctrl">
 
         <!-- Hi! -->
-        <div id="step0">
+        <div id="step0" ng-show="step === 0">
           <h1>Hi there!</h1>
           <p>The Concordia Calendar Ninja is a little side-project of mine that logs in to your MyConcordia portal, grabs your schedule and adds it to your Google Calendar.</p>
           <center>
-            <p><a class="btn btn-primary btn-lg" id="get-started-btn">Get Started</a></p>
+            <p><a class="btn btn-primary btn-lg" ng-click="step = 1">Get Started</a></p>
           </center>
         </div>
 
         <!-- step 1 -->
-        <div id="step1">
-          <h1 id="step1header">First, let's grab your schedule</h1>
-          <div id="step1form">
+        <div id="step1" ng-show="step === 1" ng-init="loading = false">
+          <h1 id="step1header">{{step1title}}</h1>
+          <div id="step1form" ng-hide="loading">
             <p id="step1text">Enter your MyConcordia login details below.</p>
             <p>
-            <input type="text" id="username" placeholder="Username" class="form-control"/> <br />
-            <input type="password" id="password" placeholder="Password" class="form-control" /> <br />
+            <input type="text" ng-model="username" placeholder="Username" class="form-control"/> <br />
+            <input type="password" ng-model="password" placeholder="Password" class="form-control" /> <br />
             <center>
-              <p><a class="btn btn-primary btn-lg" id="get-schedule-btn">Steal Schedule</a></p>
+              <p><a class="btn btn-primary btn-lg" ng-click="stealSchedule()">Steal Schedule</a></p>
               <p>
                 <a
                   id="is-this-safe-btn" 
@@ -49,19 +54,39 @@
               </p>
             </center>
           </div>
-          <div id="step1spinnercontainer">
-            <div id="step1spinner"></div>
-          </div>
+          <span us-spinner ng-show="loading"></span>
         </div>
 
         <!-- step2 -->
-        <div id="step2">
+        <div id="step2" ng-show="step === 2">
           <h1>Here's what we found..</h1>
           <div id="step2form">
-            <form class="form-horizontal" role="form">
-              <div class="panel-group" id="step2Accordion">
-              </div>
-            </form>
+
+            <table class="table table-striped">
+              <tr>
+                <th>Add?</th>
+                <th>Year</th>
+                <th>Term</th>
+                <th>Course</th>
+                <th>Type</th>
+                <th>Location</th>
+                <th>Day</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+              </tr>
+              <tr ng-repeat="timeslot in timeslots">
+                <td><input type="checkbox" class="form-control"></td>
+                <td>{{timeslot.course === timeslots[$index - 1].course ? ' ' : timeslot.year}}</td>
+                <td>{{timeslot.course === timeslots[$index - 1].course ? ' ' : timeslot.term}}</td>
+                <td>{{timeslot.course === timeslots[$index - 1].course ? ' ' : timeslot.course}}</td>
+                <td>{{timeslot.details}}</td>
+                <td>{{timeslot.location}}</td>
+                <td>{{day(timeslot.day)}}</td>
+                <td>{{timeslot.start_time}}</td>
+                <td>{{timeslot.end_time}}</td>
+              </tr>
+            </table>
+
           </div>
           <center>
             <p><a class="btn btn-primary btn-lg" id="import-btn">Import Timeslots</a></p>

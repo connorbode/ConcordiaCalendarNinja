@@ -1,145 +1,76 @@
-// config =============================
-var apiKey = 'AIzaSyBDzlWciuiWaIDY5Hdaw5M9WnlLo0_pAsQ';
-var auth = new GoogleAuth();
-var backend = new BackendNinja();
 
-// app ================================
-var app = {
+/**
 
-  // initializes the app
-  init: function () {
-    $('#step1').css('display', 'none');
-    $('#step1spinnercontainer').css('display', 'none');
-    $('#step2').css('display', 'none');
+  When I started this project I thought "it's small, no point in using Angular".
+  So.. I used jQuery, then realized that doing a whole app in jQuery is fucked,
+  then switched to Angular and as a result the front end of this app is kinda fucked.
 
-    // start spinner
-    var opts = {
-      lines: 13,
-      length: 20,
-      width: 10,
-      radius: 30,
-      corners: 1,
-      rotate: 0,
-      direction: 1,
-      color: '#000',
-      speed: 1,
-      trail: 60,
-      shadow: false,
-      hwaccel: false,
-      className: 'spinner',
-      zIndex: 2e9,
-      top: '50%',
-      left: '50%'
+*/
+angular.module('ninja.app', ['angularSpinner'])
+
+  .controller('Ctrl', function ($scope, $http) {
+
+    // config =============================
+    var apiKey = 'AIzaSyBDzlWciuiWaIDY5Hdaw5M9WnlLo0_pAsQ';
+    var auth = new GoogleAuth();
+    var backend = new BackendNinja();
+
+    $scope.years = {};
+    $scope.step1title = "First, let's grab your schedule";
+    var step1titlefail = "Uh.. Do you know your password?";
+
+    // retrieve schedule
+    $scope.stealSchedule = function () {
+      credentials = {
+        username: $scope.username,
+        password: $scope.password
+      };
+
+      $scope.loading = true;
+
+      backend.getTimeslots(credentials)
+        .success(function (data, status, xhr) {
+          $scope.step = 2;
+          $scope.timeslots = data;
+          $scope.timeslots.sort(function (x, y) {
+            if(x.year > y.year) {
+              return -1;
+            } else if (x.year < y.year) {
+              return 1;
+            } else {
+              if(x.term === 'Winter' && (y.term === 'Summer' || y.term === 'Fall')) {
+                return -1;
+              } else if (x.term === 'Summer' && y.term === 'Fall') {
+                return -1;
+              } else if (x.term === 'Summer' && y.term === 'Winter') {
+                return 1;
+              } else if (x.term === 'Fall' && (y.term === 'Summer' || y.term === 'Winter')) {
+                return 1;
+              } else {
+                if (x.course > y.course) {
+                  return -1;
+                } else {
+                  return 1;
+                }
+              }
+            }
+          });
+          $scope.loading = false;
+          $scope.$digest();
+        })
+        .error (function (xhr, status, error) {
+          $scope.step1title = step1titlefail;
+          $scope.loading = false;
+          $scope.$digest();
+        });
     };
-    var target = $('#step1spinner')[0];
-    var spinner = new Spinner(opts).spin(target);
-  },
 
-  // brings the user to the first step
-  start: function () {
-    $('#step0').fadeOut('slow', function () {
-      $('#step1').fadeIn('slow');
-    });
-  },
-
-  // try to get the user's calendar
-  startSteal: function () {
-
-    var credentials = {
-      username: $('#username').val(),
-      password: $('#password').val(),
-      term: "Winter"
+    $scope.day = function (day) {
+      var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      return days[day];
     };
 
-    $('#step1form').fadeOut('slow', function () {
-      $('#step1spinnercontainer').fadeIn('slow');
-    });
-
-    backend.getTimeslots(credentials)
-      .success(function (data, status, xhr) {
-        var form = $('#step2Accordion');
-        $.each(data, function (index, timeslot) {
-          form.append(generateAccordion(timeslot, index));
-        });
-        $('#step1').fadeOut('slow', function () {
-          $('#step2').fadeIn('slow');
-        });
-      })
-      .error (function (xhr, status, error) {
-        $('#step1header').text('Uh...');
-        $('#step1text').text("The credentials you gave me didn't work.. You know your own password, right?");
-        $('#step1spinnercontainer').fadeOut('slow', function () {
-          $('#step1form').fadeIn('slow');
-        });
-      });
-  },
-
-  // auth with google
-  auth: function () {
-    auth.auth();
-  }
-}
-
-// events =============================
-$(function () {
-  app.init();
-});
-
-// proceed from step 0
-$('#get-started-btn').on('click', function () {
-  app.start();
-});
-
-// proceed from step 1 
-$('#get-schedule-btn').on('click', function () {
-  app.startSteal();
-});
-
-// proceed from step 2
-$('#import-btn').on('click', function () {
-  app.auth();
-});
-
-
-
-
-
-
-
-// helpers ================================
-function generateAccordion (timeslot, index) {
-  var parent = "step2Accordion";
-  var collapse = "step2AccordionCollapse" + index;
-  var elem = '';
-  elem += '<div class="panel panel-default">';
-  elem += '<div class="panel-heading">';
-  elem += '<h4 class="panel-title">';
-  elem += '<input type="checkbox"> &nbsp; ';
-  elem += '<a data-toggle="collapse" data-parent="#' + parent + '" href="#' + collapse + '">';
-  elem += timeslot.term + " " + timeslot.year + " - " + timeslot.course;
-  elem += '</a>';
-  elem += '</h4>';
-  elem += '</div>';
-  elem += '<div id="' + collapse + '" class="panel-collapse collapse">';
-  elem += '<div class="panel-body">';
-
-  elem += '<div class="form-group">';
-  elem += '<label class="col-sm-3 control-label">Title</label>';
-  elem += '<div class="col-sm-8">';
-  elem += '<input class="form-control" type="text" value="' + timeslot.course + ' ' + timeslot.details + '">';
-  elem += '</div></div>';
-
-  elem += '<div class="form-group">';
-  elem += '<label class="col-sm-3 control-label">Location</label>';
-  elem += '<div class="col-sm-8">';
-  elem += '<input class="form-control" type="text" value="">';
-  elem += '</div></div>';
-
-  elem += '</div>';
-  elem += '</div>';
-
-  return elem;
-}
+  });
 
 
 function handleGoogleAuth(response) {
