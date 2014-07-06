@@ -9,3 +9,13 @@
 #step1spinner {
   margin-top: 40px;
 }
+
+h1 {
+  background-color: #3276b1;
+  border-color: #285e8e;
+  border-width: 1px;
+  border-style: solid;
+  color: white;
+  padding: 20px;
+  border-radius: 6px;
+}

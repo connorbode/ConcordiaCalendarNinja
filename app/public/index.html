@@ -26,7 +26,7 @@
 
         <!-- Hi! -->
         <div id="step0" ng-show="step === 0">
-          <h1>Hi there!</h1>
+          <h2>Hi there!</h2>
           <p>The Concordia Calendar Ninja is a little side-project of mine that logs in to your MyConcordia portal, grabs your schedule and adds it to your Google Calendar.</p>
           <center>
             <p><a class="btn btn-primary btn-lg" ng-click="step = 1">Get Started</a></p>
@@ -35,7 +35,7 @@
 
         <!-- step 1 -->
         <div id="step1" ng-show="step === 1" ng-init="loading = false">
-          <h1 id="step1header">{{step1title}}</h1>
+          <h2 id="step1header">{{step1title}}</h2>
           <div id="step1form" ng-hide="loading">
             <p id="step1text">Enter your MyConcordia login details below.</p>
             <p>
@@ -60,7 +60,7 @@
 
         <!-- step2 -->
         <div id="step2" ng-show="step === 2">
-          <h1>Here's what we found..</h1>
+          <h2>Here's what we found..</h2>
           <div id="step2form">
 
             <table class="table table-striped">
