@@ -21,9 +21,11 @@ post '/' do
 end
 
 def ninja
+
+  params = JSON.parse request.body.string # properly interpret client request
   content_type :json
 
-  schedule = Schedule.new params[:username], params[:password]
+  schedule = Schedule.new params['username'], params['password']
 
   h = schedule.fetch
   schedule.response.to_json

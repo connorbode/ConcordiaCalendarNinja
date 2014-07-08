@@ -6,9 +6,13 @@
   then switched to Angular and as a result the front end of this app is kinda fucked.
 
 */
-angular.module('ninja.app', ['angularSpinner'])
+angular.module('ninja.app', [
 
-  .controller('Ctrl', function ($scope, $http) {
+  'angularSpinner',
+  'timeslot.service'
+])
+
+  .controller('Ctrl', function ($scope, $http, TimeslotService) {
 
     // config =============================
     var apiKey = 'AIzaSyBDzlWciuiWaIDY5Hdaw5M9WnlLo0_pAsQ';
@@ -21,14 +25,10 @@ angular.module('ninja.app', ['angularSpinner'])
 
     // retrieve schedule
     $scope.stealSchedule = function () {
-      credentials = {
-        username: $scope.username,
-        password: $scope.password
-      };
 
       $scope.loading = true;
 
-      backend.getTimeslots(credentials)
+      TimeslotService.getTimeslots($scope.username, $scope.password)
         .success(function (data, status, xhr) {
           $scope.step = 2;
           $scope.timeslots = data;
@@ -56,12 +56,10 @@ angular.module('ninja.app', ['angularSpinner'])
             }
           });
           $scope.loading = false;
-          $scope.$digest();
         })
         .error (function (xhr, status, error) {
           $scope.step1title = step1titlefail;
           $scope.loading = false;
-          $scope.$digest();
         });
     };
 
