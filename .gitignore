@@ -22,3 +22,6 @@
 
 # ignore build
 /build
+
+# ignore coverage
+/coverage
