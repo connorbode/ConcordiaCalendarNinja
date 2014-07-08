@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/connorbode/ConcordiaCalendarNinja",
   "devDependencies": {
+    "angular-mocks": "^1.2.19",
     "grunt": "~0.4.2",
     "grunt-contrib-clean": "^0.5.0",
     "grunt-contrib-copy": "^0.5.0",

@@ -17,12 +17,16 @@ module.exports = function(config) {
     files: [
 
       // dependencies
+      'app/public/bower_components/angular/angular.js',
       'app/public/bower_components/jquery/dist/jquery.min.js',
       'app/public/bower_components/spinjs/spin.js',
-      'app/public/bower_components/angular/angular.js',
+
+      // spec dependencies
+      'node_modules/angular-mocks/angular-mocks.js',
 
       // app
       'spec/**/*_spec.js',
+      'spec/**/*.spec.js',
       'app/public/scripts/**/*.js'
     ],
 
