@@ -19,6 +19,7 @@ module.exports = function(config) {
       // dependencies
       'app/public/bower_components/jquery/dist/jquery.min.js',
       'app/public/bower_components/spinjs/spin.js',
+      'app/public/bower_components/angular/angular.js',
 
       // app
       'spec/**/*_spec.js',
@@ -64,7 +65,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: ['PhantomJS'],
 
 
     // Continuous Integration mode

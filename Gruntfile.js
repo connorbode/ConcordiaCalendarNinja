@@ -78,4 +78,5 @@ module.exports = function(grunt) {
   // Default task.
   grunt.registerTask('default', ['jshint']);
   grunt.registerTask('deploy', ['copy:build', 'gitInitAndDeploy:deploy']);
+  grunt.registerTask('test', ['karma:unit']);
 };
