@@ -32,29 +32,7 @@ angular.module('ninja.app', [
         .success(function (data, status, xhr) {
           $scope.step = 2;
           $scope.timeslots = data;
-          $scope.timeslots.sort(function (x, y) {
-            if(x.year > y.year) {
-              return -1;
-            } else if (x.year < y.year) {
-              return 1;
-            } else {
-              if(x.term === 'Winter' && (y.term === 'Summer' || y.term === 'Fall')) {
-                return 1;
-              } else if (x.term === 'Summer' && y.term === 'Fall') {
-                return 1;
-              } else if (x.term === 'Summer' && y.term === 'Winter') {
-                return -1;
-              } else if (x.term === 'Fall' && (y.term === 'Summer' || y.term === 'Winter')) {
-                return -1;
-              } else {
-                if (x.course > y.course) {
-                  return -1;
-                } else {
-                  return 1;
-                }
-              }
-            }
-          });
+          $scope.timeslots = TimeslotService.sortTimeslots($scope.timeslots);
           $scope.loading = false;
         })
         .error (function (xhr, status, error) {
