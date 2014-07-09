@@ -30,5 +30,14 @@ describe('timeslot.service', function () {
       });
     });
 
+    describe('compareTimeslot()', function () {
+      it('compares properly based on year', function () {
+        var x = { year: 2011 };
+        var y = { year: 2012 };
+        expect(TimeslotService.compareTimeslot(x, y)).toEqual(1);
+        expect(TimeslotService.compareTimeslot(y, x)).toEqual(-1);
+      });
+    });
+
   });
 });
