@@ -12,7 +12,6 @@ describe('timeslot.service', function () {
   describe('TimeslotService', function () {
 
     describe('getTimeslots()', function () {
-
       it('posts appropriately', function () {
         var user = 'testuser';
         var pass = 'testpass';
@@ -20,7 +19,15 @@ describe('timeslot.service', function () {
         TimeslotService.getTimeslots(user, pass);
         $httpBackend.flush();
       });
+    });
 
+    describe('sortTimeslots()', function () {
+      it('sorts properly', function () {
+        var timeslots = { sort: function () {} };
+        spyOn(timeslots, 'sort');
+        TimeslotService.sortTimeslots(timeslots);
+        expect(timeslots.sort).toHaveBeenCalledWith(TimeslotService.compareTimeslot);
+      });
     });
 
   });
