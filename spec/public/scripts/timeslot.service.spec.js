@@ -37,6 +37,27 @@ describe('timeslot.service', function () {
         expect(TimeslotService.compareTimeslot(x, y)).toEqual(1);
         expect(TimeslotService.compareTimeslot(y, x)).toEqual(-1);
       });
+
+      it('compares properly based on term', function () {
+        var x = { year: 2011, term: 'Summer' };
+        var y = { year: 2011, term: 'Fall' };
+        var z = { year: 2011, term: 'Winter' };
+        var t = TimeslotService.compareTimeslot;
+        expect(t(x, y)).toEqual(-1);
+        expect(t(y, x)).toEqual(1);
+        expect(t(y, z)).toEqual(-1);
+        expect(t(z, y)).toEqual(1);
+        expect(t(x, z)).toEqual(-1);
+        expect(t(z, x)).toEqual(1);
+      });
+
+      it('compares properly based on course', function () {
+        var x = { year: 2011, term: 'Summer', course: 'a' };
+        var y = { year: 2011, term: 'Summer', course: 'b' };
+        var t = TimeslotService.compareTimeslot;
+        expect(t(x, y)).toEqual(1);
+        expect(t(y, x)).toEqual(-1);
+      });
     });
 
   });

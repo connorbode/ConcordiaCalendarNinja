@@ -12,11 +12,11 @@ angular.module('timeslot.service', [])
         } else {
           if(x.term === 'Winter' && (y.term === 'Summer' || y.term === 'Fall')) {
             return 1;
-          } else if (x.term === 'Summer' && y.term === 'Fall') {
+          } else if (x.term === 'Fall' && y.term === 'Summer') {
             return 1;
-          } else if (x.term === 'Summer' && y.term === 'Winter') {
+          } else if (x.term === 'Fall' && y.term === 'Winter') {
             return -1;
-          } else if (x.term === 'Fall' && (y.term === 'Summer' || y.term === 'Winter')) {
+          } else if (x.term === 'Summer' && (y.term === 'Fall' || y.term === 'Winter')) {
             return -1;
           } else {
             if (x.course > y.course) {
