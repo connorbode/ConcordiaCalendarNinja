@@ -21,7 +21,7 @@ angular.module('gapi.service', [
       },
 
       checkAuth: function () {
-        gapiClient.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
+        gapiClient.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, this.handleAuthResult);
       },
 
       handleAuthResult: function (result) {

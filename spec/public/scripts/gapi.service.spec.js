@@ -11,6 +11,9 @@ describe('gapi.service', function () {
     gapi = {
       client: {
         setApiKey: function (blah) {}
+      },
+      auth: {
+        authorize: angular.noop
       }
     };
     GapiService.setClient(gapi);
@@ -25,6 +28,14 @@ describe('gapi.service', function () {
       setTimeout(function () {
         expect(GapiService.checkAuth).toHaveBeenCalled();
       }, 100);
+    });
+  });
+
+  describe('checkAuth()', function () {
+    it('auths', function () {
+      spyOn(gapi.auth, 'authorize');
+      GapiService.checkAuth();
+      expect(gapi.auth.authorize).toHaveBeenCalled();
     });
   });
 });
