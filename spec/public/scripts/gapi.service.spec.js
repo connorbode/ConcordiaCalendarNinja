@@ -2,8 +2,10 @@ describe('gapi.service', function () {
 
   var GapiService;
   var gapi;
+  var config;
 
   beforeEach(module('gapi.service'));
+  beforeEach(module('app.config'));
   beforeEach(inject(function ($injector) {
     GapiService = $injector.get('GapiService');
     gapi = {

@@ -1,9 +1,11 @@
-angular.module('gapi.service', [])
+angular.module('gapi.service', [
+  'app.config'
+])
 
-  .service('GapiService', function () {
-    var clientId = '375598335107-4uro6idndhosr9k1qas7v6f9fuhfpcsq.apps.googleusercontent.com';
-    var apiKey = 'AIzaSyBDzlWciuiWaIDY5Hdaw5M9WnlLo0_pAsQ';
-    var scopes = 'https://www.googleapis.com/auth/calendar';
+  .service('GapiService', function (CONFIG) {
+    var clientId = CONFIG.google.clientId;
+    var apiKey = CONFIG.google.apiKey;
+    var scopes = CONFIG.google.scopes;
     var gapiClient;
 
     return {
