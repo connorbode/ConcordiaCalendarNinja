@@ -20,6 +20,7 @@ module.exports = function(config) {
       'app/public/bower_components/angular/angular.js',
       'app/public/bower_components/jquery/dist/jquery.min.js',
       'app/public/bower_components/spinjs/spin.js',
+      // 'https://apis.google.com/js/client.js',
 
       // spec dependencies
       'node_modules/angular-mocks/angular-mocks.js',
