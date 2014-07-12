@@ -5,6 +5,7 @@ gem 'net-http-persistent'
 gem 'mechanize'
 gem 'improved-rack-throttle'
 gem 'thin'
+gem 'tzinfo'
 
 group :test do
   gem 'rspec'

@@ -3,6 +3,7 @@ require 'net/http'
 require 'net/http/persistent'
 require 'mechanize'
 require 'nokogiri'
+require 'tzinfo'
 
 class Schedule
 
@@ -114,9 +115,9 @@ class Schedule
   def getTime time, day, term, year
     case term
     when "Winter"
-      start_day = Date.new(year, 1, 1)
+      start_day = Time.new(year, 1, 1,)
     when "Fall"
-      start_day = Date.new(year, 9, 1)
+      start_day = Time.new(year, 9, 1)
     # Need to figure out specifics for summer.
     # when "Summer"
     #   start_day = Date.new(year, 6, 1)
@@ -126,7 +127,14 @@ class Schedule
       start_day = start_day.next
     end
 
-    start_day.to_time.strftime("%Y-%m-%d") + "T#{time}:00-05:00"
+    start_day.strftime("%Y-%m-%d") + "T#{time}:00-05:00"
+  end
+
+  def getOffset
+    tz = TZInfo::Timezone.get('America/Montreal')
+    current = tz.current_period
+    offset_seconds = current.utc_total_offset
+    offset_hours = offset_seconds * 3600
   end
 
   def getRecurrenceRule term, year
