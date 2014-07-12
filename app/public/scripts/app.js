@@ -9,15 +9,14 @@
 angular.module('ninja.app', [
 
   'angularSpinner',
-  'timeslot.service'
+  'timeslot.service',
+  'gapi.service'
 ])
 
-  .controller('Ctrl', function ($scope, $http, TimeslotService) {
+  .controller('Ctrl', function ($scope, $http, TimeslotService, GapiService) {
 
     // config =============================
     var apiKey = 'AIzaSyBDzlWciuiWaIDY5Hdaw5M9WnlLo0_pAsQ';
-    var auth = new GoogleAuth();
-    var backend = new BackendNinja();
 
     $scope.years = {};
     $scope.step1title = "First, let's grab your schedule";
@@ -48,6 +47,26 @@ angular.module('ninja.app', [
 
     $scope.time = function (time) {
       return moment(time).format('HH:mm');
+    };
+
+    $scope.auth = function () {
+      GapiService.setClient(gapi);
+      GapiService.load();
+    };
+
+    $scope.createCalendar = function () {
+      GapiService.addCalendar('ConcordiaCalendarNinja', function (returned) {
+        $scope.$apply(function () {
+          $scope.addedTimeslots = 0;
+        });
+        _.each($scope.timeslots, function (timeslot) {
+          GapiService.addTimeslot(returned.id, timeslot, function (response) {
+            $scope.$apply(function () {
+              $scope.addedTimeslots++;
+            });
+          });
+        });
+      });
     };
 
   });

@@ -8,7 +8,7 @@
     <script src='bower_components/bootstrap/dist/js/bootstrap.min.js'></script>
     <script src='bower_components/bootstrap-timepicker/js/bootstrap-timepicker.min.js'></script>
     <script src='bower_components/spinjs/spin.js'></script>
-    <script src='bower_components/angular/angular.min.js'></script>
+    <script src='bower_components/angular/angular.js'></script>
     <script src='bower_components/angular-spinner/angular-spinner.min.js'></script>
     <script src='bower_components/lodash/dist/lodash.min.js'></script>
     <script src='bower_components/momentjs/min/moment.min.js'></script>
@@ -91,7 +91,14 @@
 
           </div>
           <center>
-            <p><a class="btn btn-primary btn-lg" id="import-btn">Import Timeslots</a></p>
+            <p><a class="btn btn-primary btn-lg" id="import-btn" ng-click="">Import Timeslots</a></p>
+            Imported {{addedTimeslots}}/{{timeslots.length}}
+            <p>
+              <a class="btn btn-success btn-lg" ng-click="auth()">Authenticate with Google</a>
+            </p>
+            <p>
+              <a class="btn btn-danger btn-lg" ng-click="createCalendar()">Create Calendar</a>
+            </p>
           </center>
         </div>
 
@@ -99,10 +106,8 @@
       </div>
     </div>
 
-    
-    <script src='scripts/GoogleAuth.js'></script>
-    <script src='scripts/GoogleCalendar.js'></script>
-    <script src='scripts/BackendNinja.js'></script>
+    <script src="scripts/app.config.js"></script>
+    <script src="scripts/gapi.service.js"></script>
     <script src='scripts/timeslot.service.js'></script>
     <script src='scripts/app.js'></script>
       

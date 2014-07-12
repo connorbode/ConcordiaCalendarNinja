@@ -36,16 +36,16 @@ var GoogleCalendar = function(config) {
     var url;
     
     // compile the request URL
-    url = "https://www.googleapis.com/calendar/v3/calendars/" + encodeURIComponent(calendarId) + "/events?key=" + apiKey;
+    url = "?key=" + apiKey;
       
     // compile the request data
     requestData = {
       'start': {
-        'dateTime': timeslot.start,
+        'dateTime': timeslot.startTime,
         'timeZone': timezone
       },
       'end': {
-        'dateTime': timeslot.end,
+        'dateTime': timeslot.endTime,
         'timeZone': timezone
       },
       'location': timeslot.location,
