@@ -48,4 +48,11 @@ describe 'schedule.rb' do
       expect{s.fetch}.to raise_error(InvalidRequest)
     end
   end
+
+  describe 'getOffset' do
+    it 'gets the proper offset during dst' do
+      s = Schedule.new 'test', 'test'
+      expect(s.getOffset).to eq "-04:00"
+    end
+  end
 end 

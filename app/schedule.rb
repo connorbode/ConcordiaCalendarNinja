@@ -134,7 +134,9 @@ class Schedule
     tz = TZInfo::Timezone.get('America/Montreal')
     current = tz.current_period
     offset_seconds = current.utc_total_offset
-    offset_hours = offset_seconds * 3600
+    offset_hours = offset_seconds / 3600
+    offset_str = "-0" + offset_hours.to_s[1..2] + ":00"
+    offset_str
   end
 
   def getRecurrenceRule term, year
