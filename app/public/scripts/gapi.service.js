@@ -16,6 +16,10 @@ angular.module('gapi.service', [
         gapiClient = client;
       },
 
+      setService: function () {
+        service = this;
+      },
+
       load: function () {
         service = this;
         gapiClient.client.setApiKey(apiKey);

@@ -33,6 +33,7 @@ describe('gapi.service', function () {
 
   describe('checkAuth()', function () {
     it('auths', function () {
+      GapiService.setService();
       spyOn(gapi.auth, 'authorize');
       GapiService.checkAuth();
       expect(gapi.auth.authorize).toHaveBeenCalled();
