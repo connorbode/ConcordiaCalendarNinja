@@ -14,95 +14,92 @@
     <script src='bower_components/momentjs/min/moment.min.js'></script>
     <script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
   </head>
-  <body ng-app="ninja.app">
+  <body ng-app="ninja.app" ng-controller="Ctrl">
     <div class="container">
-      <div class="page-header">
-        <h1>
-          <span class="glyphicon glyphicon-calendar"></span>
-          Concordia Calendar Ninja 
-          <small>by Connor Bode</small>
-        </h1>
+      <div class="background">
+        <canvas id="canvas"></canvas>
+        <img src="images/ninja2x.png" height="200" class="ninja">
       </div>
-      <div class="well well-lg col-sm-12" ng-init="step = 0" ng-controller="Ctrl">
+      <div class="ground"></div>
+    </div>
 
-        <!-- Hi! -->
-        <div id="step0" ng-show="step === 0">
-          <h2>Hi there!</h2>
-          <p>The Concordia Calendar Ninja is a little side-project of mine that logs in to your MyConcordia portal, grabs your schedule and adds it to your Google Calendar.</p>
+    <div class="content">
+
+      <!-- Hi! -->
+      <div id="step0" ng-show="step === 0">
+        <h2>Hi there!</h2>
+        <p>The Concordia Calendar Ninja is a little side-project of mine that logs in to your MyConcordia portal, grabs your schedule and adds it to your Google Calendar.</p>
+        <center>
+          <p><a class="btn btn-primary btn-lg" ng-click="step = 1">Get Started</a></p>
+        </center>
+      </div>
+
+      <!-- step 1 -->
+      <div id="step1" ng-show="step === 1" ng-init="loading = false">
+        <h2 id="step1header">{{step1title}}</h2>
+        <div id="step1form" ng-hide="loading">
+          <p id="step1text">Enter your MyConcordia login details below.</p>
+          <p>
+          <input type="text" ng-model="username" placeholder="Username" class="form-control"/> <br />
+          <input type="password" ng-model="password" placeholder="Password" class="form-control" /> <br />
           <center>
-            <p><a class="btn btn-primary btn-lg" ng-click="step = 1">Get Started</a></p>
-          </center>
-        </div>
-
-        <!-- step 1 -->
-        <div id="step1" ng-show="step === 1" ng-init="loading = false">
-          <h2 id="step1header">{{step1title}}</h2>
-          <div id="step1form" ng-hide="loading">
-            <p id="step1text">Enter your MyConcordia login details below.</p>
+            <p><a class="btn btn-primary btn-lg" ng-click="stealSchedule()">Steal Schedule</a></p>
             <p>
-            <input type="text" ng-model="username" placeholder="Username" class="form-control"/> <br />
-            <input type="password" ng-model="password" placeholder="Password" class="form-control" /> <br />
-            <center>
-              <p><a class="btn btn-primary btn-lg" ng-click="stealSchedule()">Steal Schedule</a></p>
-              <p>
-                <a
-                  id="is-this-safe-btn" 
-                  data-container="body"
-                  data-toggle="tooltip" 
-                  data-placement="bottom" 
-                  data-content="Fill this out">
-                  Is this safe??
-                </a>
-              </p>
-            </center>
-          </div>
-          <span us-spinner ng-show="loading"></span>
-        </div>
-
-        <!-- step2 -->
-        <div id="step2" ng-show="step === 2">
-          <h2>Here's what we found..</h2>
-          <div id="step2form">
-
-            <table class="table table-striped">
-              <tr>
-                <th>Add?</th>
-                <th>Year</th>
-                <th>Term</th>
-                <th>Course</th>
-                <th>Type</th>
-                <th>Location</th>
-                <th>Day</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-              </tr>
-              <tr ng-repeat="timeslot in timeslots">
-                <td><input type="checkbox" class="form-control"></td>
-                <td>{{timeslot.course === timeslots[$index - 1].course ? ' ' : timeslot.year}}</td>
-                <td>{{timeslot.course === timeslots[$index - 1].course ? ' ' : timeslot.term}}</td>
-                <td>{{timeslot.course === timeslots[$index - 1].course ? ' ' : timeslot.course}}</td>
-                <td>{{timeslot.details}}</td>
-                <td>{{timeslot.location}}</td>
-                <td>{{day(timeslot.day)}}</td>
-                <td>{{time(timeslot.startTime)}}</td>
-                <td>{{time(timeslot.endTime)}}</td>
-              </tr>
-            </table>
-
-          </div>
-          <center>
-            <p><a class="btn btn-primary btn-lg" id="import-btn" ng-click="">Import Timeslots</a></p>
-            Imported {{addedTimeslots}}/{{timeslots.length}}
-            <p>
-              <a class="btn btn-success btn-lg" ng-click="auth()">Authenticate with Google</a>
-            </p>
-            <p>
-              <a class="btn btn-danger btn-lg" ng-click="createCalendar()">Create Calendar</a>
+              <a
+                id="is-this-safe-btn" 
+                data-container="body"
+                data-toggle="tooltip" 
+                data-placement="bottom" 
+                data-content="Fill this out">
+                Is this safe??
+              </a>
             </p>
           </center>
         </div>
+        <span us-spinner ng-show="loading"></span>
+      </div>
 
+      <!-- step2 -->
+      <div id="step2" ng-show="step === 2">
+        <h2>Here's what we found..</h2>
+        <div id="step2form">
 
+          <table class="table table-striped">
+            <tr>
+              <th>Add?</th>
+              <th>Year</th>
+              <th>Term</th>
+              <th>Course</th>
+              <th>Type</th>
+              <th>Location</th>
+              <th>Day</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+            </tr>
+            <tr ng-repeat="timeslot in timeslots">
+              <td><input type="checkbox" class="form-control"></td>
+              <td>{{timeslot.course === timeslots[$index - 1].course ? ' ' : timeslot.year}}</td>
+              <td>{{timeslot.course === timeslots[$index - 1].course ? ' ' : timeslot.term}}</td>
+              <td>{{timeslot.course === timeslots[$index - 1].course ? ' ' : timeslot.course}}</td>
+              <td>{{timeslot.details}}</td>
+              <td>{{timeslot.location}}</td>
+              <td>{{day(timeslot.day)}}</td>
+              <td>{{time(timeslot.startTime)}}</td>
+              <td>{{time(timeslot.endTime)}}</td>
+            </tr>
+          </table>
+
+        </div>
+        <center>
+          <p><a class="btn btn-primary btn-lg" id="import-btn" ng-click="">Import Timeslots</a></p>
+          Imported {{addedTimeslots}}/{{timeslots.length}}
+          <p>
+            <a class="btn btn-success btn-lg" ng-click="auth()">Authenticate with Google</a>
+          </p>
+          <p>
+            <a class="btn btn-danger btn-lg" ng-click="createCalendar()">Create Calendar</a>
+          </p>
+        </center>
       </div>
     </div>
 
