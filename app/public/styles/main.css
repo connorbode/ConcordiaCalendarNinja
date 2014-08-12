@@ -1,3 +1,17 @@
+@font-face {
+  font-family: OrangeJuice;
+  src: url(../fonts/oj.ttf);
+}
+
+a, a:hover, a:link, a:active {
+  cursor: pointer;
+  color: #E8DDC9;
+}
+
+h2 {
+  text-align: center;
+}
+
 .page-header {
   font-family: 'Open Sans', sans-serif
 }
@@ -70,4 +84,37 @@ div.container {
   position: absolute;
   left: 0;
   top: 0;
+}
+
+div.content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -300px;
+  width: 600px;
+  height: 50%;
+  color: white;
+}
+
+div#step0 {
+  position: relative;
+  top: 40%;
+  transform: translateY(-40%);
+  text-align: center;
+}
+
+div#step1 {
+  position: relative;
+  top: 50%;
+  margin-top: -130px;
+}
+
+input.form-control {
+  height: 50px;
+}
+
+div.spinnerDiv {
+  position: absolute;
+  top: 10em;
+  left: 50%;
 }

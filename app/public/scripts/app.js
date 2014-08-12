@@ -18,6 +18,7 @@ angular.module('ninja.app', [
     // config =============================
     var apiKey = 'AIzaSyBDzlWciuiWaIDY5Hdaw5M9WnlLo0_pAsQ';
 
+    $scope.step = 0;
     $scope.years = {};
     $scope.step1title = "First, let's grab your schedule";
     var step1titlefail = "Uh.. Do you know your password?";
