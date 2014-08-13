@@ -53,6 +53,7 @@ angular.module('timeslot.service', [])
               title: timeslot.term + ' ' + timeslot.year,
               courses: [{
                 title: timeslot.course,
+                selected: true,
                 timeslots: [ timeslot ]
               }]
             });
