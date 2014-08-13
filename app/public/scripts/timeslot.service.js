@@ -28,9 +28,37 @@ angular.module('timeslot.service', [])
         }
       },
 
-      sortTimeslots: function (timeslots) {
+      getSessions: function (timeslots) {
         var service = this;
-        return timeslots.sort(service.compareTimeslot);
+        var sessions = [];
+        var timeslots = timeslots.sort(service.compareTimeslot);
+
+        _.forEach(timeslots, function (timeslot) {
+          var session, course;
+          session = _.where(sessions, function (s) { return s.title === timeslot.term + ' ' + timeslot.year; })[0];
+
+          if (session) {
+            course = _.where(session.courses, { title: timeslot.course })[0];
+            if (course) {
+              course.timeslots.push(timeslot);
+            } else {
+              session.courses.push({
+                title: timeslot.course,
+                selected: true,
+                timeslots: [ timeslot ]
+              });
+            }
+          } else {
+            sessions.push({
+              title: timeslot.term + ' ' + timeslot.year,
+              courses: [{
+                title: timeslot.course,
+                timeslots: [ timeslot ]
+              }]
+            });
+          }
+        });
+        return sessions;
       },
 
       getTimeslots: function (username, password) {
