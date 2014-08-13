@@ -58,44 +58,19 @@
 
       <!-- step2 -->
       <div id="step2" ng-show="step === 2">
-        <h2>Here's what we found..</h2>
+        <h2>Select the courses you want to add</h2>
         <div id="step2form">
-
-          <table class="table table-striped">
-            <tr>
-              <th>Add?</th>
-              <th>Year</th>
-              <th>Term</th>
-              <th>Course</th>
-              <th>Type</th>
-              <th>Location</th>
-              <th>Day</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-            </tr>
-            <tr ng-repeat="timeslot in timeslots">
-              <td><input type="checkbox" class="form-control"></td>
-              <td>{{timeslot.course === timeslots[$index - 1].course ? ' ' : timeslot.year}}</td>
-              <td>{{timeslot.course === timeslots[$index - 1].course ? ' ' : timeslot.term}}</td>
-              <td>{{timeslot.course === timeslots[$index - 1].course ? ' ' : timeslot.course}}</td>
-              <td>{{timeslot.details}}</td>
-              <td>{{timeslot.location}}</td>
-              <td>{{day(timeslot.day)}}</td>
-              <td>{{time(timeslot.startTime)}}</td>
-              <td>{{time(timeslot.endTime)}}</td>
-            </tr>
-          </table>
-
+          <div ng-repeat="session in sessions" class="session">
+            <h3>{{session.title}}</h3>
+            <ul>
+              <li ng-repeat="course in session.courses">
+                <input type="checkbox" ng-model="course.selected"><span class="label label-checkbox"><a ng-click="course.selected = ! course.selected">{{course.title}}</a></span>
+              </li>
+            </ul>
+          </div>
         </div>
         <center>
-          <p><a class="btn btn-primary btn-lg" id="import-btn" ng-click="">Import Timeslots</a></p>
-          Imported {{addedTimeslots}}/{{timeslots.length}}
-          <p>
-            <a class="btn btn-success btn-lg" ng-click="auth()">Authenticate with Google</a>
-          </p>
-          <p>
-            <a class="btn btn-danger btn-lg" ng-click="createCalendar()">Create Calendar</a>
-          </p>
+          <p><a class="btn btn-warning btn-md continuebtn">Continue</a></p>
         </center>
       </div>
     </div>

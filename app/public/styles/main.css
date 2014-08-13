@@ -118,3 +118,39 @@ div.spinnerDiv {
   top: 10em;
   left: 50%;
 }
+
+div#step2 {
+  position: absolute;
+  top: 50%;
+  margin-top: -120px;
+  width: 100%;
+}
+
+div.session {
+  position: relative;
+}
+
+div.session h3 {
+  display: inline-block;
+  color: #E8DDC9;
+}
+
+div.session ul {
+  list-style-type: none;
+  position: absolute;
+  top: 20px;
+  right: 0;
+  font-size: 20px;
+  max-width: 500px;
+  text-align: right;
+}
+
+div.session li {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+div#step2 .continuebtn {
+  position: relative;
+  top: 20px;
+}

@@ -35,8 +35,7 @@ angular.module('ninja.app', [
       TimeslotService.getTimeslots($scope.username, $scope.password)
         .success(function (data, status, xhr) {
           $scope.step = 2;
-          $scope.timeslots = data;
-          $scope.timeslots = TimeslotService.sortTimeslots($scope.timeslots);
+          $scope.sessions = TimeslotService.getSessions(data);
           $scope.loading = false;
         })
         .error (function (xhr, status, error) {
