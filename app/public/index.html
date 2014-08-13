@@ -58,7 +58,7 @@
 
       <!-- step2 -->
       <div id="step2" ng-show="step === 2">
-        <h2>Select the courses you want to add</h2>
+        <h2>Select the courses you want to import</h2>
         <div id="step2form">
           <div ng-repeat="session in sessions" class="session">
             <h3>{{session.title}}</h3>
@@ -70,8 +70,14 @@
           </div>
         </div>
         <center>
-          <p><a class="btn btn-warning btn-md continuebtn">Continue</a></p>
+          <p><a class="btn btn-warning btn-md continuebtn" ng-click="step = 3">Continue</a></p>
         </center>
+      </div>
+
+      <div id="step3" ng-show="step === 3">
+        <h2>What calendar do you use?</h2>
+        <a class="btn btn-warning btn-md" ng-click="step = 4">Google</a>
+        <a class="btn btn-warning btn-md" ng-click="step = 5">Apple</a>
       </div>
     </div>
 
