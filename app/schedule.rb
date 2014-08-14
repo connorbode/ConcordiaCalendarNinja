@@ -151,6 +151,6 @@ class Schedule
       end_date = Date.new(year, 12, 25)
     end
     
-    "RRULE:FREQ=WEEKLY;UNTIL=" + end_date.to_time.strftime("%Y-%m-%d")
+    "RRULE:FREQ=WEEKLY;UNTIL=" + end_date.to_time.strftime("%Y%m%d") + "T000000Z"
   end
 end

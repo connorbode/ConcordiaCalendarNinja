@@ -59,7 +59,7 @@ angular.module('gapi.service', [
             'location': timeslot.location,
             'summary': timeslot.course + ' ' + timeslot.details,
             'recurrence': [
-              // timeslot.recurrenceRule
+              timeslot.recurrenceRule
             ]
           },
           callback: callback
