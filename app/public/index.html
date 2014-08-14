@@ -79,6 +79,13 @@
         <a class="btn btn-warning btn-md" ng-click="step = 4">Google</a>
         <a class="btn btn-warning btn-md" ng-click="step = 5">Apple</a>
       </div>
+
+      <div id="step4" ng-show="step === 4">
+        <h2>Import to Google Calendar</h2>
+        <a class="btn btn-warning btn-md" ng-click="auth()" ng-hide="googleAuthed">Authenticate your Google Account</a>
+        <a class="btn btn-warning btn-md" ng-click="import()" ng-show="googleAuthed">Import your schedule</a>
+        <div>Imported {{addedTimeslots}} / {{totalTimeslots}}</div>
+      </div>
     </div>
 
     <script src="scripts/app.config.js"></script>

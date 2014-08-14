@@ -20,29 +20,16 @@ angular.module('gapi.service', [
         service = this;
       },
 
-      load: function () {
+      load: function (callback) {
         service = this;
         gapiClient.client.setApiKey(apiKey);
-        window.setTimeout(service.checkAuth, 1);
+        window.setTimeout(function () {
+          service.checkAuth(callback)
+        }, 1);
       },
 
-      checkAuth: function () {
-        gapiClient.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, service.handleAuthResult);
-      },
-
-      handleAuthResult: function (result) {
-        if (result) {
-          console.log(result);
-        } else {
-          console.log('blocked');
-        }/*
-        var authorizeButton = document.getElementById('authorize-button');
-        if (authResult && !authResult.error) {
-          authorizeButton.style.visibility = 'hidden';
-        } else {
-          authorizeButton.style.visibility = '';
-          authorizeButton.onclick = handleAuthClick;
-        }*/
+      checkAuth: function (callback) {
+        gapiClient.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, callback);
       },
 
       addCalendar: function (name, callback) {
@@ -70,9 +57,9 @@ angular.module('gapi.service', [
               'timeZone': timezone
             },
             'location': timeslot.location,
-            'summary': timeslot.summary,
+            'summary': timeslot.course + ' ' + timeslot.details,
             'recurrence': [
-              timeslot.recurrence
+              // timeslot.recurrenceRule
             ]
           },
           callback: callback

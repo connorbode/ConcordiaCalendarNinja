@@ -55,19 +55,61 @@ angular.module('ninja.app', [
 
     $scope.auth = function () {
       GapiService.setClient(gapi);
-      GapiService.load();
+      GapiService.load($scope.handleGoogleResponse);
     };
 
-    $scope.createCalendar = function () {
+    $scope.handleGoogleResponse = function (result) {
+      if (result) {
+        $scope.googleAuthed = true;
+      }
+    };
+
+    $scope.numTimeslots = function () {
+      return _.reduce($scope.sessions, function (sum, session) {
+        return sum + _.reduce(session.courses, function (sum2, course) {
+          return course.selected ? sum2 + course.timeslots.length : sum2;
+        }, 0);
+      }, 0);
+    };
+
+    $scope.importTimeslot = function (calendarId, timeslot, attempt) {
+      var timeout = 4 // number of tries before quitting
+        , interval = 1000; // break between requests
+
+      if ( ! attempt) {
+        attempt = 0;
+      }
+
+      if (attempt > timeout) {
+        // timeout
+        console.log('TIMEOUT');
+      } else {
+        window.setTimeout(function () {
+          GapiService.addTimeslot(calendarId, timeslot, function (response) {
+            if (response.error) {
+              $scope.importTimeslot(calendarId, timeslot, attempt + 1);
+            } else {
+              $scope.$apply(function () {
+                $scope.addedTimeslots += 1;
+              });
+            }
+          });
+        }, attempt * interval);
+      }
+    };
+
+    $scope.import = function () {
+      $scope.importing = true;
+      $scope.totalTimeslots = $scope.numTimeslots();
+      $scope.addedTimeslots = 0;
       GapiService.addCalendar('ConcordiaCalendarNinja', function (returned) {
-        $scope.$apply(function () {
-          $scope.addedTimeslots = 0;
-        });
-        _.each($scope.timeslots, function (timeslot) {
-          GapiService.addTimeslot(returned.id, timeslot, function (response) {
-            $scope.$apply(function () {
-              $scope.addedTimeslots++;
-            });
+        _.each($scope.sessions, function (session) {
+          _.forEach(session.courses, function (course) {
+            if (course.selected) {
+              _.forEach(course.timeslots, function (timeslot) {
+                $scope.importTimeslot(returned.id, timeslot);
+              });
+            }
           });
         });
       });
