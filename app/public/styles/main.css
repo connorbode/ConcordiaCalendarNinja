@@ -166,3 +166,11 @@ div#step3 {
 div#step3 a {
   margin-right: 20px;
 }
+
+div#step4 {
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  margin-top: -50px;
+}

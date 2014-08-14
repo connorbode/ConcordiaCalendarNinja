@@ -83,8 +83,12 @@
       <div id="step4" ng-show="step === 4">
         <h2>Import to Google Calendar</h2>
         <a class="btn btn-warning btn-md" ng-click="auth()" ng-hide="googleAuthed">Authenticate your Google Account</a>
-        <a class="btn btn-warning btn-md" ng-click="import()" ng-show="googleAuthed">Import your schedule</a>
-        <div>Imported {{addedTimeslots}} / {{totalTimeslots}}</div>
+        <a class="btn btn-warning btn-md" ng-click="import()" ng-show="googleAuthed && !importing">Import your schedule</a>
+        <div class="progress" ng-show="importing">
+          <div id="upload-bar" class="progress-bar progress-bar-striped progress-bar-warning active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">
+            <span class="sr-only"></span>
+          </div>
+        </div>
       </div>
     </div>
 

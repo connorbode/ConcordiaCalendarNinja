@@ -99,10 +99,16 @@ angular.module('ninja.app', [
     };
 
     $scope.import = function () {
+      var progressBarWatch;
       $scope.importing = true;
       $scope.totalTimeslots = $scope.numTimeslots();
       $scope.addedTimeslots = 0;
+      $scope.$watch('addedTimeslots', function (newValue, oldValue) {
+        var percentage = Math.floor(($scope.addedTimeslots / ($scope.totalTimeslots + 1)) * 100);
+        $('#upload-bar').width(percentage + '%');
+      });
       GapiService.addCalendar('ConcordiaCalendarNinja', function (returned) {
+        $scope.$apply(function () { $scope.addedTimeslots++; });
         _.each($scope.sessions, function (session) {
           _.forEach(session.courses, function (course) {
             if (course.selected) {
