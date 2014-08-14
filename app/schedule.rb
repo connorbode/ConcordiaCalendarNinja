@@ -65,6 +65,9 @@ class Schedule
         # if we find the year, then the schedule has some content
         if result.text[0, term.length] == term
           year = result.text[-4,4].to_i 
+          if term == 'Winter'
+            year += 1
+          end
           h.css("tr").each do |row|
             day = 0
             row.css("td").each do |col|
