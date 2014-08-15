@@ -106,6 +106,9 @@ angular.module('ninja.app', [
       $scope.$watch('addedTimeslots', function (newValue, oldValue) {
         var percentage = Math.floor(($scope.addedTimeslots / ($scope.totalTimeslots + 1)) * 100);
         $('#upload-bar').width(percentage + '%');
+        if (percentage > 99) {
+          $scope.step = 6;
+        }
       });
       GapiService.addCalendar('ConcordiaCalendarNinja', function (returned) {
         $scope.$apply(function () { $scope.addedTimeslots++; });
@@ -222,6 +225,18 @@ angular.module('ninja.app', [
       interval: 10,
       offsetIncrement: 0.05
     });
+
+    // load flattr widget
+    (function() {
+      var s = document.createElement('script');
+      var t = document.getElementsByTagName('script')[0];
+
+      s.type = 'text/javascript';
+      s.async = true;
+      s.src = '//api.flattr.com/js/0.6/load.js?mode=auto';
+
+      t.parentNode.insertBefore(s, t);
+    })();
   });
 
 

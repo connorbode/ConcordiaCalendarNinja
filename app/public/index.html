@@ -12,6 +12,7 @@
     <script src='bower_components/angular-spinner/angular-spinner.min.js'></script>
     <script src='bower_components/lodash/dist/lodash.min.js'></script>
     <script src='bower_components/momentjs/min/moment.min.js'></script>
+    <script src="http://coinwidget.com/widget/coin.js"></script>
     <script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
   </head>
   <body ng-app="ninja.app" ng-controller="Ctrl">
@@ -89,6 +90,43 @@
             <span class="sr-only"></span>
           </div>
         </div>
+      </div>
+
+      <div id="step6" ng-show="step === 6">
+        <h2>All done.</h2>
+        <p>If this tool made your life easier <b>please make a donation!</b> </p>
+        <p>(I've spent around 60 hours making this tool..)</p>
+        <div>
+          <div class="donate-button"><script>
+            CoinWidgetCom.go({
+              wallet_address: "14tyMvCG32sufJvHtXEzV7aj6PChhg75HF"
+              , currency: "bitcoin"
+              , counter: "count"
+              , alignment: "ac"
+              , qrcode: true
+              , auto_show: false
+              , lbl_button: "Donate"
+              , lbl_address: "My Bitcoin Address:"
+              , lbl_count: "donations"
+              , lbl_amount: "BTC"
+            });
+            </script></div>
+          <div class="donate-button flattr-button"><script id='fbcvnnz'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=disRukus&button=compact&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=20;f.width=110;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fbcvnnz');</script></div>
+          <div class="donate-button"><script>
+            CoinWidgetCom.go({
+              wallet_address: "LLCYdv44LEAHto6eBpJ3WZFtvtfH4GEDEs"
+              , currency: "litecoin"
+              , counter: "count"
+              , alignment: "ac"
+              , qrcode: true
+              , auto_show: false
+              , lbl_button: "Donate"
+              , lbl_address: "My Litecoin Address:"
+              , lbl_count: "donations"
+              , lbl_amount: "LTC"
+            });
+            </script></div>
+
       </div>
     </div>
 
