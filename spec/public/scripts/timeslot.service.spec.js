@@ -21,15 +21,6 @@ describe('timeslot.service', function () {
       });
     });
 
-    describe('sortTimeslots()', function () {
-      it('sorts properly', function () {
-        var timeslots = { sort: function () {} };
-        spyOn(timeslots, 'sort');
-        TimeslotService.sortTimeslots(timeslots);
-        expect(timeslots.sort).toHaveBeenCalledWith(TimeslotService.compareTimeslot);
-      });
-    });
-
     describe('compareTimeslot()', function () {
       it('compares properly based on year', function () {
         var x = { year: 2011 };

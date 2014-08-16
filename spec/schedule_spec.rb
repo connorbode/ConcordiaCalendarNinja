@@ -18,8 +18,8 @@ describe 'schedule.rb' do
   describe 'getRecurrenceRule' do
     it 'returns the appropriate recurrence rule' do 
       s = Schedule.new "test", "test"
-      expect(s.getRecurrenceRule "Fall", 2014).to eq "RRULE:FREQ=WEEKLY;UNTIL=2014-12-25"
-      expect(s.getRecurrenceRule "Winter", 2099).to eq "RRULE:FREQ=WEEKLY;UNTIL=2099-04-30"
+      expect(s.getRecurrenceRule "Fall", 2014).to eq "RRULE:FREQ=WEEKLY;UNTIL=20141225T000000Z"
+      expect(s.getRecurrenceRule "Winter", 2099).to eq "RRULE:FREQ=WEEKLY;UNTIL=20990430T000000Z"
     end
   end
 
