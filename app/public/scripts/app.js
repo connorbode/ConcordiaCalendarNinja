@@ -10,10 +10,11 @@ angular.module('ninja.app', [
 
   'angularSpinner',
   'timeslot.service',
-  'gapi.service'
+  'gapi.service',
+  'ics.service'
 ])
 
-  .controller('Ctrl', function ($scope, $http, TimeslotService, GapiService) {
+  .controller('Ctrl', function ($scope, $http, TimeslotService, GapiService, ICSService) {
 
     // config =============================
     var apiKey = 'AIzaSyBDzlWciuiWaIDY5Hdaw5M9WnlLo0_pAsQ';
@@ -122,6 +123,21 @@ angular.module('ninja.app', [
           });
         });
       });
+    };
+
+    $scope.generateICS = function () {
+      var timeslots = [];
+      _.forEach($scope.sessions, function (session) {
+        _.forEach(session.courses, function (course) {
+          if (course.selected) {
+            _.forEach(course.timeslots, function (timeslot) {
+              timeslots.push(timeslot);
+            });
+          }
+        });
+      });
+
+      ICSService.generateICS(timeslots);
     };
 
     function setCanvasSize () {
