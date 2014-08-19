@@ -175,6 +175,16 @@ div#step4 {
   margin-top: -50px;
 }
 
+div#step5 {
+  position: absolute;
+  text-align: center;
+  width: 400px;
+  left: 50%;
+  margin-left: -200px;
+  top: 50%;
+  margin-top: -50px;
+}
+
 div#step6 {
   width: 100%;
   text-align: center;

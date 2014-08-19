@@ -137,7 +137,9 @@ angular.module('ninja.app', [
         });
       });
 
-      ICSService.generateICS(timeslots);
+      ICSService.generateICS(timeslots, function () {
+        $scope.step = 6;
+      });
     };
 
     function setCanvasSize () {
