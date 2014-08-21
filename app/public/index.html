@@ -14,7 +14,7 @@
     <script src='bower_components/momentjs/min/moment.min.js'></script>
     <script src='bower_components/ics.js/ics.deps.min.js'></script>
     <script src='scripts/ics.js'></script>
-    <script src="http://coinwidget.com/widget/coin.js"></script>
+    <script src="coinwidget/coin.js"></script>
     <script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
   </head>
   <body ng-app="ninja.app" ng-controller="Ctrl">
@@ -102,7 +102,6 @@
       <div id="step6" ng-show="step === 6">
         <h2>All done.</h2>
         <p>If this tool made your life easier <b>please make a donation!</b> </p>
-        <p>(I've spent around 60 hours making this tool..)</p>
         <div>
           <div class="donate-button"><script>
             CoinWidgetCom.go({
