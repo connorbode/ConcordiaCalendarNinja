@@ -74,7 +74,9 @@ angular.module('ninja.app', [
 
     $scope.handleGoogleResponse = function (result) {
       if (result) {
-        $scope.googleAuthed = true;
+        $scope.$apply(function () { 
+          $scope.googleAuthed = true;
+        });
       }
     };
 
