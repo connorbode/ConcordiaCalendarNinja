@@ -15,7 +15,7 @@
     <script src='bower_components/ics.js/ics.deps.min.js'></script>
     <script src='scripts/ics.js'></script>
     <script src='scripts/force-https.js'></script>
-    <script src="coinwidget/coin.js"></script>
+    <script src="scripts/qrcode.min.js"></script>
     <script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
   </head>
   <body ng-app="ninja.app" ng-controller="Ctrl">
@@ -104,37 +104,37 @@
         <h2>All done.</h2>
         <p>If this tool made your life easier <b>please make a donation!</b> </p>
         <div>
-          <div class="donate-button"><script>
-            CoinWidgetCom.go({
-              wallet_address: "14tyMvCG32sufJvHtXEzV7aj6PChhg75HF"
-              , currency: "bitcoin"
-              , counter: "count"
-              , alignment: "ac"
-              , qrcode: true
-              , auto_show: false
-              , lbl_button: "Donate"
-              , lbl_address: "My Bitcoin Address:"
-              , lbl_count: "donations"
-              , lbl_amount: "BTC"
-            });
-            </script></div>
+          <div class="donate-button">
+            <a href ng-click="step = 7">Donate BTC</a>
+          </div>
           <div class="donate-button flattr-button"><script id='fbcvnnz'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=disRukus&button=compact&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=20;f.width=110;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fbcvnnz');</script></div>
-          <div class="donate-button"><script>
-            CoinWidgetCom.go({
-              wallet_address: "LLCYdv44LEAHto6eBpJ3WZFtvtfH4GEDEs"
-              , currency: "litecoin"
-              , counter: "count"
-              , alignment: "ac"
-              , qrcode: true
-              , auto_show: false
-              , lbl_button: "Donate"
-              , lbl_address: "My Litecoin Address:"
-              , lbl_count: "donations"
-              , lbl_amount: "LTC"
-            });
-            </script></div>
-
+          <div class="donate-button">
+            <a href ng-click="step = 8">Donate LTC</a>
+          </div>
+        </div>
       </div>
+
+      <div id="step7" ng-show="step === 7">
+        <h2>Donate Bitcoin.</h2>
+        <div class="link">
+          BTC: <a href="bitcoin:14tyMvCG32sufJvHtXEzV7aj6PChhg75HF">14tyMvCG32sufJvHtXEzV7aj6PChhg75HF</a>
+        </div>
+        <div id="donate-btc-qr"></div>
+        <div><a href ng-click="step = 6">Back</a></div>
+      </div>
+
+      <div id="step8" ng-show="step === 8">
+        <h2>Donate Litecoin.</h2>
+        <div class="link">
+          LTC: <a href="litecoin:LdsEk8MhhqYArWY5yTmVmPYvDdcEznVmQr">LdsEk8MhhqYArWY5yTmVmPYvDdcEznVmQr</a>
+        </div>
+        <div id="donate-ltc-qr"></div>
+        <div><a href ng-click="step = 6">Back</a></div>
+      </div>
+    </div>
+
+
+    <div class="donate-btc">
     </div>
 
     <script src='scripts/ics.service.js'></script>

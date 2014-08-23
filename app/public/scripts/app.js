@@ -28,6 +28,19 @@ angular.module('ninja.app', [
     var c = canvas.getContext('2d');
     var center;
 
+    new QRCode($('#donate-btc-qr')[0], {
+      text: '14tyMvCG32sufJvHtXEzV7aj6PChhg75HF',
+      width: 128,
+      height: 128
+    });
+    new QRCode($('#donate-ltc-qr')[0], {
+      text: 'LdsEk8MhhqYArWY5yTmVmPYvDdcEznVmQr',
+      width: 128,
+      height: 128
+    });
+
+    
+
     // retrieve schedule
     $scope.stealSchedule = function () {
 
