@@ -42,17 +42,7 @@
           <input type="text" ng-model="username" placeholder="Username" class="form-control"/> <br />
           <input type="password" ng-model="password" placeholder="Password" class="form-control" /> <br />
           <center>
-            <p><a class="btn btn-warning btn-md" ng-click="stealSchedule()">Steal Schedule</a></p>
-            <p>
-              <a
-                id="is-this-safe-btn" 
-                data-container="body"
-                data-toggle="tooltip" 
-                data-placement="bottom" 
-                data-content="Fill this out">
-                Is this safe??
-              </a>
-            </p>
+            <p><a class="btn btn-warning btn-md" ng-click="stealSchedule()">Retrieve your timetable</a></p>
           </center>
         </div>
         <div ng-show="loading" class="spinnerDiv">
