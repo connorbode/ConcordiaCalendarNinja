@@ -45,6 +45,7 @@ angular.module('ninja.app', [
     $scope.stealSchedule = function () {
 
       $scope.loading = true;
+      $scope.attemptedLogin = true;
 
       TimeslotService.getTimeslots($scope.username, $scope.password)
         .success(function (data, status, xhr) {
