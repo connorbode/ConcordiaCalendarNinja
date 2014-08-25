@@ -1,4 +1,4 @@
-## Concordia Course Ninja
+## Concordia Calendar Ninja
 
 #### Installation
 
